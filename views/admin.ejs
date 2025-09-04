@@ -61,13 +61,13 @@
   <!-- ===============================================-->
   <!--    Main Content-->
   <!-- ===============================================-->
-  <main class="main admin" id="top">
+  <main class="main" id="top">
+
+    <%- include('partials/admin/sidebar.ejs') %>
 
     <%- include('partials/admin/navbar.ejs') %>
 
-      <%- include('partials/admin/sidebar.ejs') %>
-
-        <%- include(`pages/admin/${render.page}`) %>
+    <%- include(`pages/admin/${render.page}`) %>
 
   </main><!-- ===============================================-->
   <!--    End of Main Content-->
@@ -92,17 +92,17 @@
           <div class="col-4"><input class="btn-check" id="themeSwitcherLight" name="theme-color" type="radio"
               value="light" data-theme-control="phoenixTheme" /><label class="btn d-inline-block btn-navbar-style fs-9"
               for="themeSwitcherLight"> <span class="mb-2 rounded d-block"><img class="img-fluid img-prototype mb-0"
-                  src="assets/img/generic/default-light.png" alt="" /></span><span
+                  src="/assets/img/generic/default-light.png" alt="" /></span><span
                 class="label-text">Light</span></label></div>
           <div class="col-4"><input class="btn-check" id="themeSwitcherDark" name="theme-color" type="radio"
               value="dark" data-theme-control="phoenixTheme" /><label class="btn d-inline-block btn-navbar-style fs-9"
               for="themeSwitcherDark"> <span class="mb-2 rounded d-block"><img class="img-fluid img-prototype mb-0"
-                  src="assets/img/generic/default-dark.png" alt="" /></span><span class="label-text">
+                  src="/assets/img/generic/default-dark.png" alt="" /></span><span class="label-text">
                 Dark</span></label></div>
           <div class="col-4"><input class="btn-check" id="themeSwitcherAuto" name="theme-color" type="radio"
               value="auto" data-theme-control="phoenixTheme" /><label class="btn d-inline-block btn-navbar-style fs-9"
               for="themeSwitcherAuto"> <span class="mb-2 rounded d-block"><img class="img-fluid img-prototype mb-0"
-                  src="assets/img/generic/auto.png" alt="" /></span><span class="label-text"> Auto</span></label></div>
+                  src="/assets/img/generic/auto.png" alt="" /></span><span class="label-text"> Auto</span></label></div>
         </div>
       </div>
       <div class="border border-translucent rounded-3 p-4 setting-panel-item bg-body-emphasis">
@@ -230,9 +230,6 @@
     </div>
   </a>
 
-  <!-- ===============================================-->
-  <!--    JavaScripts-->
-  <!-- ===============================================-->
   <script>
     var navbarTopShape = window.config.config.phoenixNavbarTopShape;
     var navbarPosition = window.config.config.phoenixNavbarPosition;
@@ -332,6 +329,10 @@
       navbarVertical.setAttribute('data-navbar-appearance', 'darker');
     }
   </script>
+
+  <!-- ===============================================-->
+  <!--    JavaScripts-->
+  <!-- ===============================================-->
   <script src="/vendors/popper/popper.min.js"></script>
   <script src="/vendors/bootstrap/bootstrap.min.js"></script>
   <script src="/vendors/anchorjs/anchor.min.js"></script>

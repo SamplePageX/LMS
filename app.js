@@ -34,4 +34,11 @@ app.get('/admin/credentials', function(req, res) {
     res.render('admin', {render: {page: 'credentials'}});
 });
 
+app.post('/login', function(req, res) {
+    db.query('INSERT INTO ', (err, results) => {
+        if (err) throw err;
+        res.json(results);
+    })
+});
+
 app.listen(port, () => {console.log(`http://localhost:${port}`)});
