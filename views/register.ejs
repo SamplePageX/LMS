@@ -106,6 +106,7 @@
                                                         class="form-control form-icon-input" id="fullname" type="text"
                                                         placeholder="John P. Doe" /><span
                                                         class="fas fa-user text-body fs-9 form-icon"></span></div>
+                                                <span id="fullnameError" class="text-danger"></span>
                                             </div>
                                             <div class="mb-3 text-start"><label class="form-label" for="school_id">School
                                                     I.D</label>
@@ -113,6 +114,7 @@
                                                         class="form-control form-icon-input" id="school_id" type="text"
                                                         placeholder="20250001" /><span
                                                         class="fas fa-user text-body fs-9 form-icon"></span></div>
+                                                <span id="schoolIdError" class="text-danger"></span>
                                             </div>
                                             <div class="mb-3 text-start"><label class="form-label" for="email">Email
                                                     address</label>
@@ -120,6 +122,7 @@
                                                         class="form-control form-icon-input" id="email" type="email"
                                                         placeholder="name@example.com" /><span
                                                         class="fas fa-user text-body fs-9 form-icon"></span></div>
+                                                <span id="emailError" class="text-danger"></span>
                                             </div>
                                             <div class="row g-3 mb-3">
                                                 <div class="col-sm-6"><label class="form-label"
@@ -145,6 +148,7 @@
                                                                 class="uil uil-eye show"></span><span
                                                                 class="uil uil-eye-slash hide"></span></button></div>
                                                 </div>
+                                                <span id="passwordError" class="text-danger"></span>
                                             </div>
                                             <div class="row flex-between-center mb-7">
                                                 <div class="col-auto">
@@ -155,7 +159,7 @@
                                                                 type="button" data-bs-toggle="modal"
                                                                 data-bs-target="#terms_and_condition">terms and
                                                                 conditions</button></label></div>
-
+                                                        <span id="termsConditionError" class="text-danger"></span>
                                                     <div class="modal fade" id="terms_and_condition" tabindex="-1"
                                                         aria-labelledby="verticallyCenteredModalLabel"
                                                         style="display: none;" aria-hidden="true">
@@ -204,7 +208,7 @@
                                                     </div>
 
                                                 </div>
-                                            </div><button class="btn btn-primary w-100 mb-3">Submit</button>
+                                            </div><button id="registerBtn" class="btn btn-primary w-100 mb-3">Submit</button>
                                             <div class="text-center"><a class="fs-9 fw-bold"
                                                     href="/">Sign In</a></div>
                                         </div>
@@ -222,6 +226,81 @@
     <!-- ===============================================-->
     <!--    JavaScripts-->
     <!-- ===============================================-->
+    <script>
+        document.getElementById('registerBtn').onclick = () => {
+            const fullname = document.getElementById('fullname');
+            const schoolId = document.getElementById('school_id');
+            const email = document.getElementById('email');
+            const password = document.getElementById('password');
+            const confirmPass = document.getElementById('confirmPassword');
+            const acceptTermsConditions = document.getElementById('basic-checkbox');
+            let inputsAreValid = false;
+
+            document.getElementById('fullnameError').textContent = !fullname.value ? 'Name must not be empty' : '';
+            document.getElementById('schoolIdError').textContent = !schoolId.value ? 'School ID must not be empty' : '';
+            document.getElementById('emailError').textContent = !email.value ? 'Email must not be empty' : '';
+
+            fullname.onfocus = () => {
+                document.getElementById('fullnameError').textContent = '';
+            }
+            schoolId.onfocus = () => {
+                document.getElementById('schoolIdError').textContent = '';
+            }
+            email.onfocus = () => {
+                document.getElementById('emailError').textContent = '';
+            }
+
+            password.onfocus = () => {
+                document.getElementById('passwordError').textContent = '';
+            }
+
+            confirmPass.onfocus = () => {
+                document.getElementById('passwordError').textContent = '';
+            }
+
+            if (password.value !== confirmPass.value) {
+                document.getElementById('passwordError').textContent = "Confirm password didn't match";
+            } else if (!password.value && !confirmPass.value) {
+                document.getElementById('passwordError').textContent = "Password must not be empty";
+            }
+
+            if (!acceptTermsConditions.checked) {
+                document.getElementById('termsConditionError').textContent = 'Please accept the terms and conditions';
+            }
+
+            acceptTermsConditions.onchange = () => {
+                document.getElementById('termsConditionError').textContent = '';
+            }
+
+            if (fullname.value && schoolId.value && email.value && password.value && acceptTermsConditions.checked) {
+                inputsAreValid = true;
+            } else {
+                return;
+            }
+
+            if (inputsAreValid) {
+                fetch('http://localhost:8080/register', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        fullname: fullname.value,
+                        school_id: schoolId.value,
+                        email: email.value,
+                        password: password.value
+                    })
+                })
+                .then(response => response.json())
+                .then(result => {
+                    window.location.href = result.redirect;
+                })
+                .catch(err => console.error(err));
+            }
+
+        }
+    </script>
     <script src="/vendors/popper/popper.min.js"></script>
     <script src="/vendors/bootstrap/bootstrap.min.js"></script>
     <script src="/vendors/anchorjs/anchor.min.js"></script>
