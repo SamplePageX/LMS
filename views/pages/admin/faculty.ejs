@@ -33,40 +33,38 @@
                   <div class="modal-body">
                     <div class="">
                       <label class="form-label ">Full Name</label>
-                      <input class="form-control" id="fullname" placeholder="Full Name" type="text"
-                        required="" />
+                      <input class="form-control" id="fullname" placeholder="Full Name" type="text" required="" />
                       <div class="valid-feedback">Looks good!</div>
                     </div>
                     <div class="">
                       <label class="form-label">Email</label>
                       <div class="input-group has-validation">
                         <span class="input-group-text" id="inputGroupPrepend">@</span>
-                        <input class="form-control" id="email" placeholder="juan1@gmail.com"
-                          type="text" aria-describedby="inputGroupPrepend" required="" />
+                        <input class="form-control" id="email" placeholder="juan1@gmail.com" type="text"
+                          aria-describedby="inputGroupPrepend" required="" />
                         <div class="invalid-feedback">Please choose a username.</div>
                       </div>
                     </div>
                     <div class="">
-                      <label class="form-label " >Department</label>
+                      <label class="form-label ">Department</label>
                       <input class="form-control" id="department" placeholder="Ex: Computer Studies" type="text"
                         required="" />
                       <div class="valid-feedback">Looks good!</div>
                     </div>
                     <div class="">
-                      <div class="mb-2 mb-sm-0"><label class="form-label text-body"
-                          >Password*</label><input class="form-control"
-                          type="password" name="password" placeholder="Password" id="password"
+                      <div class="mb-2 mb-sm-0"><label class="form-label text-body">Password*</label><input
+                          class="form-control" type="password" name="password" placeholder="Password" id="password"
                           data-wizard-password="true" /></div>
                     </div>
                     <div class="">
-                      <div class="mb-2"><label class="form-label text-body"
-                         ></label>Confirm Password*</label><input
+                      <div class="mb-2"><label class="form-label text-body"></label>Confirm Password*</label><input
                           class="form-control" type="password" name="confirmPassword" placeholder="Confirm Password"
                           id="confirmPassword" data-wizard-confirm-password="true" /></div>
                     </div>
                   </div>
-                  <div class="modal-footer"><button class="btn btn-primary" id="addFacultyBtn" type="button">Save</button><button
-                      class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">Cancel</button></div>
+                  <div class="modal-footer"><button class="btn btn-primary" id="addFacultyBtn"
+                      type="button">Save</button><button class="btn btn-outline-primary" type="button"
+                      data-bs-dismiss="modal">Cancel</button></div>
                 </div>
               </div>
             </div>
@@ -82,17 +80,16 @@
                   <th class="sort border-top border-translucent ps-3" data-sort="name">Name</th>
                   <th class="sort border-top" data-sort="email">Email</th>
                   <th class="sort border-top asc" data-sort="department">Department</th>
-                  <th class="sort border-top asc" data-sort="status">Status</th>
+                  
                   <th class="sort text-end align-middle pe-0 border-top" scope="col">ACTION</th>
                 </tr>
               </thead>
-              <tbody class="list">
+              <tbody class="list" id="tableRow">
                 <tr>
                   <td class="align-middle ps-3 name">Jaliyah Ritter</td>
                   <td class="align-middle email">jaliyah@example.com</td>
                   <td class="align-middle department">12</td>
-                  <td class="badge badge-phoenix fs-10 badge-phoenix-success mt-2"><span
-                      class="fw-bold">Active</span><span class="ms-1 fas fa-check"></span></td>
+                
                   <td class="align-middle white-space-nowrap text-end pe-0">
                     <div class="btn-reveal-trigger position-static"><button
                         class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal fs-10"
@@ -108,10 +105,9 @@
                       <div class="dropdown-menu dropdown-menu-end py-2">
 
                         <!-- edit -->
-                        <a class="dropdown-item" data-bs-toggle="modal"
-                          data-bs-target="#verticallyCentered1">Edit</a>
+                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#verticallyCentered1">Edit</a>
                         <!-- reset password -->
-                        <a class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#verticallyCentered2">Reset
+                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#verticallyCentered2">Reset
                           Password</a>
                         <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
                       </div>
@@ -127,11 +123,10 @@
                 <div class="modal-content">
                   <div class="modal-header">
                     <h5 class="modal-title" id="verticallyCenteredModalLabel">Edit</h5>
-                    <button
-                      class="btn btn-close p-1" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button class="btn btn-close p-1" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
-                     <div class="">
+                    <div class="">
                       <label class="form-label " for="validationCustom01">Full Name</label>
                       <input class="form-control" id="validationCustom01" placeholder="Full Name" type="text"
                         required="" />
@@ -152,16 +147,17 @@
                         required="" />
                       <div class="valid-feedback">Looks good!</div>
                     </div>
-                  
+
                   </div>
-                  <div class="modal-footer"><button class="btn btn-primary" id="saveEditBtn" type="button">Save</button><button
-                      class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">Cancel</button></div>
+                  <div class="modal-footer"><button class="btn btn-primary" id="saveEditBtn"
+                      type="button">Save</button><button class="btn btn-outline-primary" type="button"
+                      data-bs-dismiss="modal">Cancel</button></div>
                 </div>
               </div>
             </div>
             <!-- reset-modal -->
-            <div class="modal fade" id="verticallyCentered2" tabindex="-1" aria-labelledby="verticallyCenteredModalLabel"
-              aria-hidden="true" style="display: none;">
+            <div class="modal fade" id="verticallyCentered2" tabindex="-1"
+              aria-labelledby="verticallyCenteredModalLabel" aria-hidden="true" style="display: none;">
               <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                   <div class="modal-header">
@@ -169,7 +165,7 @@
                       class="btn btn-close p-1" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
-                   
+
                     <div class="">
                       <div class="mb-2 mb-sm-0"><label class="form-label text-body"
                           for="bootstrap-wizard-wizard-password">New Password*</label><input class="form-control"
@@ -182,10 +178,11 @@
                           class="form-control" type="password" name="confirmPassword" placeholder="Confirm Password"
                           id="bootstrap-wizard-wizard-confirm-password" data-wizard-confirm-password="true" /></div>
                     </div>
-                 
+
                   </div>
-                  <div class="modal-footer"><button class="btn btn-primary" id="resetSaveBtn" type="button">Save</button><button
-                      class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">Cancel</button>
+                  <div class="modal-footer"><button class="btn btn-primary" id="resetSaveBtn"
+                      type="button">Save</button><button class="btn btn-outline-primary" type="button"
+                      data-bs-dismiss="modal">Cancel</button>
                   </div>
                 </div>
               </div>
@@ -234,73 +231,94 @@
 </div>
 
 <script>
-const fullname = document.getElementById('fullname');
-const email = document.getElementById('email');
-const department = document.getElementById('department');
-const password = document.getElementById('password');
-const confirmPassword = document.getElementById('confirmPassword');
+  const fullname = document.getElementById('fullname');
+  const email = document.getElementById('email');
+  const department = document.getElementById('department');
+  const password = document.getElementById('password');
+  const confirmPassword = document.getElementById('confirmPassword');
 
-const addFacultyBtn = document.getElementById('addFacultyBtn');
-const editSaveBtn = document.getElementById('editSaveBtn');
-const resetSaveBtn = document.getElementById('resetSaveBtn');
+  const addFacultyBtn = document.getElementById('addFacultyBtn');
+  const editSaveBtn = document.getElementById('editSaveBtn');
+  const resetSaveBtn = document.getElementById('resetSaveBtn');
 
-addFacultyBtn.addEventListener('click',addFaculty);
-editSaveBtn.addEventListener('click',);
-resetSaveBtn.addEventListener('click',);
+  addFacultyBtn.addEventListener('click', addFaculty);
+  // editSaveBtn.addEventListener('click',);
+  // resetSaveBtn.addEventListener('click',);
 
-function addFaculty(){
+  function addFaculty() {
 
-if(!fullname.value && !email.value && !department.value && !password.value && !confirmPassword.value){
-  return;
-}
+    if (!fullname.value && !email.value && !department.value && !password.value && !confirmPassword.value) {
+      return;
+    }
 
-if(confirmPassword.value != password.value){
-    return;
-}
+    if (confirmPassword.value != password.value) {
+      return;
+    }
 
-  fetch('http://localhost:8080/faculty', {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        fullname: fullname.value,
-                        email: email.value,
-                        department: department.value,
-                        password: password.value
-                    })
-                })
-                .then(response => response.json())
-                .then(result => {
-                    window.load();
-                })
-                .catch(err => console.error(err));
-}
+    fetch('http://localhost:8080/faculty', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        fullname: fullname.value,
+        email: email.value,
+        department: department.value,
+        password: password.value
+      })
+    })
+      .then(response => response.json())
+      .then(result => {
+        
+       window.location.reload();
+      })
+      .catch(err => console.error(err));
+  }
 
-function render(){
-  let facultyTable = " ";
 
-  fetch('http://localhost:8080/faculty', {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        fullname: fullname.value,
-                        email: email.value,
-                        department: department.value,
-                        password: password.value
-                    })
-                })
-                .then(response => response.json())
-                .then(result => {
-                    window.load();
-                })
-                .catch(err => console.error(err));
 
-}
+
+  fetch('http://localhost:8080/facultyTable')
+    .then(response => response.json())
+    .then(result => {
+      let facultyTable = "";
+     console.log("hello");
+      result.data.forEach(row => {
+        facultyTable += `<tr>
+                  <td class="align-middle ps-3 name">${row.fullname}</td>
+                  <td class="align-middle email">${row.email}</td>
+                  <td class="align-middle department">${row.department}</td>
+                  <td class="align-middle white-space-nowrap text-end pe-0">
+                    <div class="btn-reveal-trigger position-static"><button
+                        class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal fs-10"
+                        type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true"
+                        aria-expanded="false" data-bs-reference="parent"><svg class="svg-inline--fa fa-ellipsis fs-10"
+                          aria-hidden="true" focusable="false" data-prefix="fas" data-icon="ellipsis" role="img"
+                          xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="">
+                          <path fill="currentColor"
+                            d="M8 256a56 56 0 1 1 112 0A56 56 0 1 1 8 256zm160 0a56 56 0 1 1 112 0 56 56 0 1 1 -112 0zm216-56a56 56 0 1 1 0 112 56 56 0 1 1 0-112z">
+                          </path>
+                        </svg><!-- <span class="fas fa-ellipsis-h fs-10"></span> Font Awesome fontawesome.com --></button>
+                      <!-- action -->
+                      <div class="dropdown-menu dropdown-menu-end py-2">
+
+                        <!-- edit -->
+                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#verticallyCentered1">Edit</a>
+                        <!-- reset password -->
+                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#verticallyCentered2">Reset
+                          Password</a>
+                        <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
+                      </div>
+                    </div>
+                  </td>
+                </tr>`
+      })
+      document.getElementById('tableRow').innerHTML =  facultyTable;
+    })
+    .catch(err => console.error(err));
+
+
 
 
 
