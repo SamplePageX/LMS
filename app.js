@@ -41,7 +41,12 @@ app.get('/register', function (req, res) {
 
 // Forgot password page
 app.get('/forgot-password', function (req, res) {
-    res.render('password');
+    res.render('forgot-password');
+});
+
+// Reset Password Page
+app.get('/reset-password', function (req, res) {
+    res.render('reset-password');
 });
 
 // Admin Dashboard
@@ -103,31 +108,40 @@ app.get('/faculty/communication/announcements', function (req, res) {
 // API
 // >>>>>>>>>>>>>>>>>>
 
+// Login Page
 app.post('/login', function (req, res) {
 
     const validEmail = req.body.email;
     const validPassword = req.body.password;
 
-    const myQuery = `SELECT * FROM users WHERE email = '${validEmail}'`;
-    
-    db.query(myQuery, function (err, row) {
-        if (err) throw err;
-        const hash = row[0].password;
+    const myQuery = `SELECT * FROM users`;
 
-        const checkPassword = bcrypt.compareSync(validPassword, hash);
+    db.query(myQuery, function (err, rows) {
+        if (rows.length > 0) {
+            rows.forEach(row => {
+                if (validEmail == row.email) {
+                    const hash = row.password;
 
-        if (checkPassword) {
-            if (row[0].role_id === 1) {
-                res.send({'redirect': '/faculty/dashboard'});
-            } else {
-                res.send({'redirect': '/student/dashboard'});
-            }
-        } else {
-            res.send({'error': 'Invalid Credentials'});
+                    const checkPassword = bcrypt.compareSync(validPassword, hash);
+
+                    if (checkPassword) {
+                        if (row.role_id === 1) {
+                            res.send({ 'redirect': '/faculty/dashboard' });
+                        } else {
+                            res.send({ 'redirect': '/student/dashboard' });
+                        }
+                    } else {
+                        res.send({ 'error': 'Invalid Credentials' });
+                    }
+                } else {
+                    res.send({ 'error': 'Invalid Credentials' });
+                }
+            });
         }
     });
 })
 
+// Register Page
 app.post('/register', function (req, res) {
 
     const validName = req.body.fullname;
@@ -145,8 +159,29 @@ app.post('/register', function (req, res) {
         console.log("result from database: ", result);
     });
 
-    res.send({'redirect': '/'});
+    res.send({ 'redirect': '/' });
 })
+
+// Reset Password
+app.post('/forgot-password', function (req, res) {
+
+    const validEmail = req.body.email;
+
+    const myQuery = `SELECT * FROM users`;
+
+    db.query(myQuery, function (err, rows) {
+        if (rows.length > 0) {
+            rows.forEach(row => {
+                if (validEmail == row.email) {
+                    res.send({'redirect': 'reset-password'})
+                } else {
+                    res.send({ 'error': 'Invalid Credentials' });
+                }
+            });
+        }
+    });
+})
+
 // faculty
 app.post('/faculty', function (req, res) {
 
@@ -165,7 +200,7 @@ app.post('/faculty', function (req, res) {
         console.log("result from database: ", result);
     });
 
-    res.send({'redirect': '/'});
+    res.send({ 'redirect': '/' });
 })
 
 // <<<<<<<<<<<<<<<<<<
