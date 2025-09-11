@@ -44,9 +44,10 @@ app.get('/forgot-password', function (req, res) {
     res.render('forgot-password');
 });
 
+let validatedEmail;
 // Reset Password Page
 app.get('/reset-password', function (req, res) {
-    res.render('reset-password');
+    res.render('reset-password', {'data': validatedEmail});
 });
 
 // Admin Dashboard
@@ -173,12 +174,28 @@ app.post('/forgot-password', function (req, res) {
         if (rows.length > 0) {
             rows.forEach(row => {
                 if (validEmail == row.email) {
+                    validatedEmail = validEmail;
                     res.send({'redirect': 'reset-password'})
                 } else {
                     res.send({ 'error': 'Invalid Credentials' });
                 }
             });
         }
+    });
+})
+
+app.patch('/reset-password', function (req, res) {
+
+    const validEmail = req.body.email;
+    const validPassword = req.body.password;
+
+    const hash = bcrypt.hashSync(validPassword, 10);
+
+    const myQuery = `UPDATE users SET password = '${hash}' WHERE email = '${validEmail}'`;
+
+    db.query(myQuery, function (err, rows) {
+        if (err) throw err;
+        res.send({'redirect': '/'});
     });
 })
 
