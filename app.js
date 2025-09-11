@@ -220,6 +220,17 @@ app.post('/faculty', function (req, res) {
     res.send({ 'redirect': '/' });
 })
 
+// faculty table
+app.get('/facultyTable', function (req, res) {
+
+    const myQuery = `SELECT * FROM faculty`;
+
+    db.query(myQuery, function (err, rows){
+        if (rows.length > 0) {
+            res.send({ 'data': rows });
+        }
+    });
+})
 // <<<<<<<<<<<<<<<<<<
 
 app.listen(port, () => { console.log(`http://localhost:${port}`) });
