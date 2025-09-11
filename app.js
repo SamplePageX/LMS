@@ -147,6 +147,26 @@ app.post('/register', function (req, res) {
 
     res.send({'redirect': '/'});
 })
+// faculty
+app.post('/faculty', function (req, res) {
+
+    const validName = req.body.fullname;
+    const validSchoolId = req.body.school_id;
+    const validEmail = req.body.email;
+    const validPassword = req.body.password;
+
+    const hash = bcrypt.hashSync(validPassword, 10)
+
+    const myQuery = `INSERT INTO users 
+        (name, school_id, email, password, role_id) VALUES ("${validName}", "${validSchoolId}", "${validEmail}", "${hash}", 2)`;
+
+    db.query(myQuery, function (err, result) {
+        if (err) throw err;
+        console.log("result from database: ", result);
+    });
+
+    res.send({'redirect': '/'});
+})
 
 // <<<<<<<<<<<<<<<<<<
 

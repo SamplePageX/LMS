@@ -1,23 +1,257 @@
 <div class="content">
-    <div class="pb-5">
-        <div class="row g-4">
-            <div class="col-12 col-xxl-6">
-                <div class="mb-8">
-                    <h2 class="mb-2">Faculty Accounts</h2>
-                    <h5 class="text-body-tertiary fw-semibold">Manage faculty credentials</h5>
+  <div class="pb-5">
+    <div class="row g-4">
+      <div class="col-12 col-xxl-6">
+        <div class="mb-8">
+          <h2 class="mb-2">Faculty Accounts</h2>
+          <h5 class="text-body-tertiary fw-semibold">Manage faculty credentials</h5>
+        </div>
+        <!-- Contents here... -->
+
+        <div id="tableExample3"
+          data-list="{&quot;valueNames&quot;:[&quot;name&quot;,&quot;email&quot;,&quot;age&quot;],&quot;page&quot;:5,&quot;pagination&quot;:true}">
+          <div class="search-box mb-3 mx-auto d-flex w-100 justify-content-between align-items-center">
+            <form class="position-relative"><input class="form-control search-input search form-control-sm"
+                type="search" placeholder="Search" aria-label="Search">
+              <svg class="svg-inline--fa fa-magnifying-glass search-box-icon" aria-hidden="true" focusable="false"
+                data-prefix="fas" data-icon="magnifying-glass" role="img" xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 512 512" data-fa-i2svg="">
+                <path fill="currentColor"
+                  d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z">
+                </path>
+              </svg><!-- <span class="fas fa-search search-box-icon"></span> Font Awesome fontawesome.com -->
+            </form>
+
+            <div class="modal fade" id="verticallyCentered" tabindex="-1" aria-labelledby="verticallyCenteredModalLabel"
+              aria-hidden="true" style="display: none;">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="verticallyCenteredModalLabel">Add Faculty</h5><button
+                      class="btn btn-close p-1" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="">
+                      <label class="form-label " for="validationCustom01">Full Name</label>
+                      <input class="form-control" id="validationCustom01" placeholder="Full Name" type="text"
+                        required="" />
+                      <div class="valid-feedback">Looks good!</div>
+                    </div>
+                    <div class="">
+                      <label class="form-label " for="validationCustom01">Email</label>
+                      <div class="input-group has-validation">
+                        <span class="input-group-text" id="inputGroupPrepend">@</span>
+                        <input class="form-control" id="validationCustomUsername" placeholder="juan1@gmail.com"
+                          type="text" aria-describedby="inputGroupPrepend" required="" />
+                        <div class="invalid-feedback">Please choose a username.</div>
+                      </div>
+                    </div>
+                    <div class="">
+                      <label class="form-label " for="validationCustom01">Department</label>
+                      <input class="form-control" id="validationCustom01" placeholder="Ex: Computer Studies" type="text"
+                        required="" />
+                      <div class="valid-feedback">Looks good!</div>
+                    </div>
+                    <div class="">
+                      <div class="mb-2 mb-sm-0"><label class="form-label text-body"
+                          for="bootstrap-wizard-wizard-password">Password*</label><input class="form-control"
+                          type="password" name="password" placeholder="Password" id="bootstrap-wizard-wizard-password"
+                          data-wizard-password="true" /></div>
+                    </div>
+                    <div class="">
+                      <div class="mb-2"><label class="form-label text-body"
+                          for="bootstrap-wizard-wizard-confirm-password">Confirm Password*</label><input
+                          class="form-control" type="password" name="confirmPassword" placeholder="Confirm Password"
+                          id="bootstrap-wizard-wizard-confirm-password" data-wizard-confirm-password="true" /></div>
+                    </div>
+                  </div>
+                  <div class="modal-footer"><button class="btn btn-primary " type="button">Save</button><button
+                      class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">Cancel</button></div>
                 </div>
-                <!-- Contents here... -->
+              </div>
             </div>
+
+            <div id="bulk-select-replace-element"><button class="btn btn-phoenix-success btn-sm" data-bs-toggle="modal"
+                data-bs-target="#verticallyCentered" type="button"><span class="fas fa-plus"
+                  data-fa-transform="shrink-3 down-2"></span><span class="ms-1">New</span></button></div>
+          </div>
+          <div class="table-responsive">
+            <table class="table  table-sm fs-9 mb-0">
+              <thead>
+                <tr>
+                  <th class="sort border-top border-translucent ps-3" data-sort="name">Name</th>
+                  <th class="sort border-top" data-sort="email">Email</th>
+                  <th class="sort border-top asc" data-sort="department">Department</th>
+                  <th class="sort border-top asc" data-sort="status">Status</th>
+                  <th class="sort text-end align-middle pe-0 border-top" scope="col">ACTION</th>
+                </tr>
+              </thead>
+              <tbody class="list">
+                <tr>
+                  <td class="align-middle ps-3 name">Jaliyah Ritter</td>
+                  <td class="align-middle email">jaliyah@example.com</td>
+                  <td class="align-middle department">12</td>
+                  <td class="badge badge-phoenix fs-10 badge-phoenix-success mt-2"><span
+                      class="fw-bold">Active</span><span class="ms-1 fas fa-check"></span></td>
+                  <td class="align-middle white-space-nowrap text-end pe-0">
+                    <div class="btn-reveal-trigger position-static"><button
+                        class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal fs-10"
+                        type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true"
+                        aria-expanded="false" data-bs-reference="parent"><svg class="svg-inline--fa fa-ellipsis fs-10"
+                          aria-hidden="true" focusable="false" data-prefix="fas" data-icon="ellipsis" role="img"
+                          xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="">
+                          <path fill="currentColor"
+                            d="M8 256a56 56 0 1 1 112 0A56 56 0 1 1 8 256zm160 0a56 56 0 1 1 112 0 56 56 0 1 1 -112 0zm216-56a56 56 0 1 1 0 112 56 56 0 1 1 0-112z">
+                          </path>
+                        </svg><!-- <span class="fas fa-ellipsis-h fs-10"></span> Font Awesome fontawesome.com --></button>
+                      <!-- action -->
+                      <div class="dropdown-menu dropdown-menu-end py-2">
+
+                        <!-- edit -->
+                        <a class="dropdown-item" href="#!" data-bs-toggle="modal"
+                          data-bs-target="#verticallyCentered1">Edit</a>
+                        <!-- reset password -->
+                        <a class="dropdown-item" href="#!" data-bs-toggle="modal" data-bs-target="#verticallyCentered2">Reset
+                          Password</a>
+                        <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- edit-modal -->
+            <div class="modal fade" id="verticallyCentered1" tabindex="-1"
+              aria-labelledby="verticallyCenteredModalLabel" aria-hidden="true" style="display: none;">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="verticallyCenteredModalLabel">Edit</h5><button
+                      class="btn btn-close p-1" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                     <div class="">
+                      <label class="form-label " for="validationCustom01">Full Name</label>
+                      <input class="form-control" id="validationCustom01" placeholder="Full Name" type="text"
+                        required="" />
+                      <div class="valid-feedback">Looks good!</div>
+                    </div>
+                    <div class="">
+                      <label class="form-label " for="validationCustom01">Email</label>
+                      <div class="input-group has-validation">
+                        <span class="input-group-text" id="inputGroupPrepend">@</span>
+                        <input class="form-control" id="validationCustomUsername" placeholder="juan1@gmail.com"
+                          type="text" aria-describedby="inputGroupPrepend" required="" />
+                        <div class="invalid-feedback">Please choose a username.</div>
+                      </div>
+                    </div>
+                    <div class="">
+                      <label class="form-label " for="validationCustom01">Department</label>
+                      <input class="form-control" id="validationCustom01" placeholder="Ex: Computer Studies" type="text"
+                        required="" />
+                      <div class="valid-feedback">Looks good!</div>
+                    </div>
+                  
+                  </div>
+                  <div class="modal-footer"><button class="btn btn-primary" type="button">Save</button><button
+                      class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">Cancel</button></div>
+                </div>
+              </div>
+            </div>
+            <!-- reset-modal -->
+            <div class="modal fade" id="verticallyCentered2" tabindex="-1" aria-labelledby="verticallyCenteredModalLabel"
+              aria-hidden="true" style="display: none;">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="verticallyCenteredModalLabel">Reset Password</h5><button
+                      class="btn btn-close p-1" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                   
+                    <div class="">
+                      <div class="mb-2 mb-sm-0"><label class="form-label text-body"
+                          for="bootstrap-wizard-wizard-password">New Password*</label><input class="form-control"
+                          type="password" name="password" placeholder="Password" id="bootstrap-wizard-wizard-password"
+                          data-wizard-password="true" /></div>
+                    </div>
+                    <div class="">
+                      <div class="mb-2"><label class="form-label text-body"
+                          for="bootstrap-wizard-wizard-confirm-password">Confirm Password*</label><input
+                          class="form-control" type="password" name="confirmPassword" placeholder="Confirm Password"
+                          id="bootstrap-wizard-wizard-confirm-password" data-wizard-confirm-password="true" /></div>
+                    </div>
+                 
+                  </div>
+                  <div class="modal-footer"><button class="btn btn-primary" type="button">Save</button><button
+                      class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">Cancel</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between mt-3"><span class="d-none d-sm-inline-block"
+              data-list-info="data-list-info">1 to 5 <span class="text-body-tertiary"> Items of </span>43</span>
+            <div class="d-flex"><button class="page-link disabled" data-list-pagination="prev" disabled=""><svg
+                  class="svg-inline--fa fa-chevron-left" aria-hidden="true" focusable="false" data-prefix="fas"
+                  data-icon="chevron-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"
+                  data-fa-i2svg="">
+                  <path fill="currentColor"
+                    d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z">
+                  </path>
+                </svg><!-- <span class="fas fa-chevron-left"></span> Font Awesome fontawesome.com --></button>
+              <ul class="mb-0 pagination">
+                <li class="active"><button class="page" type="button" data-i="1" data-page="5">1</button></li>
+                <li><button class="page" type="button" data-i="2" data-page="5">2</button></li>
+                <li><button class="page" type="button" data-i="3" data-page="5">3</button></li>
+                <li class="disabled"><button class="page" type="button">...</button></li>
+              </ul><button class="page-link pe-0" data-list-pagination="next"><svg
+                  class="svg-inline--fa fa-chevron-right" aria-hidden="true" focusable="false" data-prefix="fas"
+                  data-icon="chevron-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"
+                  data-fa-i2svg="">
+                  <path fill="currentColor"
+                    d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z">
+                  </path>
+                </svg><!-- <span class="fas fa-chevron-right"></span> Font Awesome fontawesome.com --></button>
+            </div>
+          </div>
         </div>
+
+      </div>
     </div>
-    <footer class="footer position-absolute">
-        <div class="row g-0 justify-content-between align-items-center h-100">
-            <div class="col-12 col-sm-auto text-center">
-                <p class="mb-0 mt-2 mt-sm-0 text-body">© 2025 LMS</p>
-            </div>
-            <div class="col-12 col-sm-auto text-center">
-                
-            </div>
-        </div>
-    </footer>
+  </div>
+  <footer class="footer position-absolute">
+    <div class="row g-0 justify-content-between align-items-center h-100">
+      <div class="col-12 col-sm-auto text-center">
+        <p class="mb-0 mt-2 mt-sm-0 text-body">© 2025 LMS</p>
+      </div>
+      <div class="col-12 col-sm-auto text-center">
+
+      </div>
+    </div>
+  </footer>
 </div>
+
+<script>
+
+
+
+   fetch('http://localhost:8080/faculty', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        fullname: fullname.value,
+                        school_id: schoolId.value,
+                        email: email.value,
+                        password: password.value
+                    })
+                })
+                .then(response => response.json())
+                .then(result => {
+                    window.location.href = result.redirect;
+                })
+                .catch(err => console.error(err));
+</script>
