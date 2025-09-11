@@ -32,40 +32,40 @@
                   </div>
                   <div class="modal-body">
                     <div class="">
-                      <label class="form-label " for="validationCustom01">Full Name</label>
-                      <input class="form-control" id="validationCustom01" placeholder="Full Name" type="text"
+                      <label class="form-label ">Full Name</label>
+                      <input class="form-control" id="fullname" placeholder="Full Name" type="text"
                         required="" />
                       <div class="valid-feedback">Looks good!</div>
                     </div>
                     <div class="">
-                      <label class="form-label " for="validationCustom01">Email</label>
+                      <label class="form-label">Email</label>
                       <div class="input-group has-validation">
                         <span class="input-group-text" id="inputGroupPrepend">@</span>
-                        <input class="form-control" id="validationCustomUsername" placeholder="juan1@gmail.com"
+                        <input class="form-control" id="email" placeholder="juan1@gmail.com"
                           type="text" aria-describedby="inputGroupPrepend" required="" />
                         <div class="invalid-feedback">Please choose a username.</div>
                       </div>
                     </div>
                     <div class="">
-                      <label class="form-label " for="validationCustom01">Department</label>
-                      <input class="form-control" id="validationCustom01" placeholder="Ex: Computer Studies" type="text"
+                      <label class="form-label " >Department</label>
+                      <input class="form-control" id="department" placeholder="Ex: Computer Studies" type="text"
                         required="" />
                       <div class="valid-feedback">Looks good!</div>
                     </div>
                     <div class="">
                       <div class="mb-2 mb-sm-0"><label class="form-label text-body"
-                          for="bootstrap-wizard-wizard-password">Password*</label><input class="form-control"
-                          type="password" name="password" placeholder="Password" id="bootstrap-wizard-wizard-password"
+                          >Password*</label><input class="form-control"
+                          type="password" name="password" placeholder="Password" id="password"
                           data-wizard-password="true" /></div>
                     </div>
                     <div class="">
                       <div class="mb-2"><label class="form-label text-body"
-                          for="bootstrap-wizard-wizard-confirm-password">Confirm Password*</label><input
+                         ></label>Confirm Password*</label><input
                           class="form-control" type="password" name="confirmPassword" placeholder="Confirm Password"
-                          id="bootstrap-wizard-wizard-confirm-password" data-wizard-confirm-password="true" /></div>
+                          id="confirmPassword" data-wizard-confirm-password="true" /></div>
                     </div>
                   </div>
-                  <div class="modal-footer"><button class="btn btn-primary " type="button">Save</button><button
+                  <div class="modal-footer"><button class="btn btn-primary" id="addFacultyBtn" type="button">Save</button><button
                       class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">Cancel</button></div>
                 </div>
               </div>
@@ -233,8 +233,16 @@
 </div>
 
 <script>
+const fullname = document.getElementById('fullname');
+const email = document.getElementById('email');
+const department = document.getElementById('department');
+const password = document.getElementById('password');
+const ConfirmPassword = document.getElementById('confirmPassword');
+const addFacultyBtn = document.getElementById('addFacultyBtn');
 
+addFacultyBtn.addEventListener('click',addFaculty);
 
+function addFaculty(){
 
    fetch('http://localhost:8080/faculty', {
                     method: 'POST',
@@ -244,14 +252,19 @@
                     },
                     body: JSON.stringify({
                         fullname: fullname.value,
-                        school_id: schoolId.value,
                         email: email.value,
+                        department: department.value,
                         password: password.value
                     })
                 })
                 .then(response => response.json())
                 .then(result => {
-                    window.location.href = result.redirect;
+                    window.load();
                 })
                 .catch(err => console.error(err));
+}
+
+
+
+
 </script>

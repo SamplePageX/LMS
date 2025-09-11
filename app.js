@@ -150,15 +150,15 @@ app.post('/register', function (req, res) {
 // faculty
 app.post('/faculty', function (req, res) {
 
-    const validName = req.body.fullname;
-    const validSchoolId = req.body.school_id;
-    const validEmail = req.body.email;
-    const validPassword = req.body.password;
+    const fullname = req.body.fullname;
+    const email = req.body.email;
+    const department = req.body.department;
+    const password = req.body.password;
 
-    const hash = bcrypt.hashSync(validPassword, 10)
+    const hash = bcrypt.hashSync(password, 10)
 
-    const myQuery = `INSERT INTO users 
-        (name, school_id, email, password, role_id) VALUES ("${validName}", "${validSchoolId}", "${validEmail}", "${hash}", 2)`;
+    const myQuery = `INSERT INTO faculty 
+        (fullname, email, department, password) VALUES ("${fullname}", "${email}", "${department}", "${password}")`;
 
     db.query(myQuery, function (err, result) {
         if (err) throw err;
