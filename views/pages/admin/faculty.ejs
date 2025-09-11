@@ -108,10 +108,10 @@
                       <div class="dropdown-menu dropdown-menu-end py-2">
 
                         <!-- edit -->
-                        <a class="dropdown-item" href="#!" data-bs-toggle="modal"
+                        <a class="dropdown-item" data-bs-toggle="modal"
                           data-bs-target="#verticallyCentered1">Edit</a>
                         <!-- reset password -->
-                        <a class="dropdown-item" href="#!" data-bs-toggle="modal" data-bs-target="#verticallyCentered2">Reset
+                        <a class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#verticallyCentered2">Reset
                           Password</a>
                         <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
                       </div>
@@ -126,7 +126,8 @@
               <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="verticallyCenteredModalLabel">Edit</h5><button
+                    <h5 class="modal-title" id="verticallyCenteredModalLabel">Edit</h5>
+                    <button
                       class="btn btn-close p-1" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
@@ -153,7 +154,7 @@
                     </div>
                   
                   </div>
-                  <div class="modal-footer"><button class="btn btn-primary" type="button">Save</button><button
+                  <div class="modal-footer"><button class="btn btn-primary" id="saveEditBtn" type="button">Save</button><button
                       class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">Cancel</button></div>
                 </div>
               </div>
@@ -183,7 +184,7 @@
                     </div>
                  
                   </div>
-                  <div class="modal-footer"><button class="btn btn-primary" type="button">Save</button><button
+                  <div class="modal-footer"><button class="btn btn-primary" id="resetSaveBtn" type="button">Save</button><button
                       class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">Cancel</button>
                   </div>
                 </div>
@@ -237,14 +238,27 @@ const fullname = document.getElementById('fullname');
 const email = document.getElementById('email');
 const department = document.getElementById('department');
 const password = document.getElementById('password');
-const ConfirmPassword = document.getElementById('confirmPassword');
+const confirmPassword = document.getElementById('confirmPassword');
+
 const addFacultyBtn = document.getElementById('addFacultyBtn');
+const editSaveBtn = document.getElementById('editSaveBtn');
+const resetSaveBtn = document.getElementById('resetSaveBtn');
 
 addFacultyBtn.addEventListener('click',addFaculty);
+editSaveBtn.addEventListener('click',);
+resetSaveBtn.addEventListener('click',);
 
 function addFaculty(){
 
-   fetch('http://localhost:8080/faculty', {
+if(!fullname.value && !email.value && !department.value && !password.value && !confirmPassword.value){
+  return;
+}
+
+if(confirmPassword.value != password.value){
+    return;
+}
+
+  fetch('http://localhost:8080/faculty', {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
@@ -264,6 +278,29 @@ function addFaculty(){
                 .catch(err => console.error(err));
 }
 
+function render(){
+  let facultyTable = " ";
+
+  fetch('http://localhost:8080/faculty', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        fullname: fullname.value,
+                        email: email.value,
+                        department: department.value,
+                        password: password.value
+                    })
+                })
+                .then(response => response.json())
+                .then(result => {
+                    window.load();
+                })
+                .catch(err => console.error(err));
+
+}
 
 
 
