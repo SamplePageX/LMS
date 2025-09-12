@@ -260,6 +260,7 @@
 
             if (password.value !== confirmPass.value) {
                 document.getElementById('passwordError').textContent = "Confirm password didn't match";
+                return;
             } else if (!password.value && !confirmPass.value) {
                 document.getElementById('passwordError').textContent = "Password must not be empty";
             }
