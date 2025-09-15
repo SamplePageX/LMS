@@ -44,9 +44,10 @@ app.get('/forgot-password', function (req, res) {
     res.render('forgot-password');
 });
 
+let validatedEmail;
 // Reset Password Page
 app.get('/reset-password', function (req, res) {
-    res.render('reset-password');
+    res.render('reset-password', { 'data': validatedEmail });
 });
 
 // Admin Dashboard
@@ -55,6 +56,10 @@ app.get('/admin/dashboard', function (req, res) {
 });
 
 // Admin User Management
+app.get('/admin/user-management/users', function (req, res) {
+    res.render('admin', { render: { page: 'users' } });
+});
+
 app.get('/admin/user-management/faculties', function (req, res) {
     res.render('admin', { render: { page: 'faculty' } });
 });
@@ -114,29 +119,27 @@ app.post('/login', function (req, res) {
     const validEmail = req.body.email;
     const validPassword = req.body.password;
 
-    const myQuery = `SELECT * FROM users`;
+    const myQuery = `SELECT * FROM users WHERE email = '${validEmail}'`;
 
-    db.query(myQuery, function (err, rows) {
-        if (rows.length > 0) {
-            rows.forEach(row => {
-                if (validEmail == row.email) {
-                    const hash = row.password;
+    db.query(myQuery, function (err, row) {
+        if (row.length > 0) {
+            const hash = row[0].password;
 
-                    const checkPassword = bcrypt.compareSync(validPassword, hash);
+            const checkPassword = bcrypt.compareSync(validPassword, hash);
 
-                    if (checkPassword) {
-                        if (row.role_id === 1) {
-                            res.send({ 'redirect': '/faculty/dashboard' });
-                        } else {
-                            res.send({ 'redirect': '/student/dashboard' });
-                        }
-                    } else {
-                        res.send({ 'error': 'Invalid Credentials' });
-                    }
+            if (checkPassword) {
+                if (row[0].role_id === 1) {
+                    res.send({ 'redirect': '/faculty/dashboard' });
+                } else if (row[0].role_id === 2) {
+                    res.send({ 'redirect': '/student/dashboard' });
                 } else {
-                    res.send({ 'error': 'Invalid Credentials' });
+                    res.send({ 'redirect': '/admin/dashboard' });
                 }
-            });
+            } else {
+                res.send({ 'error': 'Invalid Credentials' });
+            }
+        } else {
+            res.send({ 'error': 'Invalid Credentials' });
         }
     });
 })
@@ -167,20 +170,59 @@ app.post('/forgot-password', function (req, res) {
 
     const validEmail = req.body.email;
 
+    const myQuery = `SELECT * FROM users WHERE email = '${validEmail}'`;
+
+    db.query(myQuery, function (err, row) {
+        if (row.length > 0) {
+            validatedEmail = validEmail;
+            res.send({ 'redirect': 'reset-password' });
+        } else {
+            res.send({ 'error': 'Invalid Credentials' });
+        }
+    });
+})
+
+app.patch('/reset-password', function (req, res) {
+
+    const validEmail = req.body.email;
+    const validPassword = req.body.password;
+
+    const hash = bcrypt.hashSync(validPassword, 10);
+
+    const myQuery = `UPDATE users SET password = '${hash}' WHERE email = '${validEmail}'`;
+
+    db.query(myQuery, function (err, rows) {
+        if (err) throw err;
+        res.send({ 'redirect': '/' });
+    });
+})
+
+// Remove User Account
+app.delete('/remove-user', function (req, res) {
+
+    const userId = req.body.user_id;
+
+    const myQuery = `DELETE FROM users WHERE id = ${userId}`;
+
+    db.query(myQuery, function (err, result) {
+        if (err) throw err;
+
+        res.send({ 'success': 'Successfully Deleted' });
+    });
+
+})
+
+// Get All Users
+app.get('/users', function (req, res) {
+
     const myQuery = `SELECT * FROM users`;
 
     db.query(myQuery, function (err, rows) {
         if (rows.length > 0) {
-            rows.forEach(row => {
-                if (validEmail == row.email) {
-                    res.send({'redirect': 'reset-password'})
-                } else {
-                    res.send({ 'error': 'Invalid Credentials' });
-                }
-            });
+            res.send({ 'data': rows })
         }
     });
-})
+});
 
 // faculty
 app.post('/faculty', function (req, res) {
@@ -208,7 +250,7 @@ app.get('/facultyTable', function (req, res) {
 
     const myQuery = `SELECT * FROM faculty`;
 
-    db.query(myQuery, function (err, rows){
+    db.query(myQuery, function (err, rows) {
         if (rows.length > 0) {
             res.send({ 'data': rows });
         }
