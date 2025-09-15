@@ -112,24 +112,24 @@
                     <button class="btn btn-close p-1" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
+                    <input class="d-none" id="id" type="text" required="" />
                     <div class="">
                       <label class="form-label " for="validationCustom01">Full Name</label>
-                      <input class="form-control" id="validationCustom01" placeholder="Full Name" type="text"
-                        required="" />
+                      <input class="form-control" id="editFullname" placeholder="Full Name" type="text" required="" />
                       <div class="valid-feedback">Looks good!</div>
                     </div>
                     <div class="">
                       <label class="form-label " for="validationCustom01">Email</label>
                       <div class="input-group has-validation">
                         <span class="input-group-text" id="inputGroupPrepend">@</span>
-                        <input class="form-control" id="validationCustomUsername" placeholder="juan1@gmail.com"
-                          type="text" aria-describedby="inputGroupPrepend" required="" />
+                        <input class="form-control" id="editEmail" placeholder="juan1@gmail.com" type="text"
+                          aria-describedby="inputGroupPrepend" required="" />
                         <div class="invalid-feedback">Please choose a username.</div>
                       </div>
                     </div>
                     <div class="">
                       <label class="form-label " for="validationCustom01">Department</label>
-                      <input class="form-control" id="validationCustom01" placeholder="Ex: Computer Studies" type="text"
+                      <input class="form-control" id="editDepartment" placeholder="Ex: Computer Studies" type="text"
                         required="" />
                       <div class="valid-feedback">Looks good!</div>
                     </div>
@@ -154,11 +154,11 @@
                       class="btn btn-close p-1" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
-
+                   <input class="d-none" id="passwordId" type="text" required="" />
                     <div class="">
                       <div class="mb-2 mb-sm-0"><label class="form-label text-body"
                           for="bootstrap-wizard-wizard-password">New Password*</label><input class="form-control"
-                          type="password" name="password" placeholder="Password" id="bootstrap-wizard-wizard-password"
+                          type="password" id="resetPassword" name="password" placeholder="Password" id="bootstrap-wizard-wizard-password"
                           data-wizard-password="true" /></div>
                     </div>
 
@@ -233,8 +233,7 @@
   const resetSaveBtn = document.getElementById('resetSaveBtn');
 
   addFacultyBtn.addEventListener('click', addFaculty);
-  // editSaveBtn.addEventListener('click',);
-  // resetSaveBtn.addEventListener('click',);
+
 
   // Create
   function addFaculty() {
@@ -271,8 +270,7 @@
   }
 
 
-
-// Read
+  // Read
   fetch('http://localhost:8080/facultyTable')
     .then(response => response.json())
     .then(result => {
@@ -297,21 +295,106 @@
                       <div class="dropdown-menu dropdown-menu-end py-2">
 
                         <!-- edit -->
-                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#verticallyCentered1">Edit</a>
+                        <a data-id="${row.user_id}" data-fullname="${row.fullname}" data-email="${row.email}" data-department="${row.department}" class="dropdown-item edit-btn" data-bs-toggle="modal" data-bs-target="#verticallyCentered1">Edit</a>
                         <!-- reset password -->
-                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#verticallyCentered2">Reset
+                        <a data-id="${row.user_id}" class="dropdown-item reset-btn" data-bs-toggle="modal" data-bs-target="#verticallyCentered2">Reset
                           Password</a>
-                        <div class="dropdown-divider"></div><a class="dropdown-item text-danger">Remove</a>
+                        <div class="dropdown-divider"></div><a data-id="${row.user_id}" class="dropdown-item text-danger delete-btn">Remove</a>
                       </div>
                     </div>
                   </td>
                 </tr>`
-               })
+      })
       document.getElementById('tableRow').innerHTML = facultyTable;
+
+      document.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.onclick = function () {
+          const fullname = btn.dataset.fullname;
+          const email = btn.dataset.email;
+          const department = btn.dataset.department;
+          const id = btn.dataset.id;
+
+          document.getElementById('editFullname').value = fullname;
+          document.getElementById('editEmail').value = email;
+          document.getElementById('editDepartment').value = department;
+          document.getElementById('id').value = id;
+          console.log(id);
+
+          document.getElementById('saveEditBtn').onclick = function () {
+            fetch('http://localhost:8080/updateFaculty', {
+              method: 'PATCH',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                fullname: document.getElementById('editFullname').value,
+                email: document.getElementById('editEmail').value,
+                department: document.getElementById('editDepartment').value,
+                id: document.getElementById('id').value,
+              })
+            })
+              .then(response => response.json())
+              .then(result => {
+
+                window.location.reload();
+              })
+              .catch(err => console.error(err));
+          }
+        }
+      })
+
+      document.querySelectorAll('.reset-btn').forEach(btn => {
+        btn.onclick = function () {
+          const id = btn.dataset.id;
+
+          document.getElementById('passwordId').value = id;
+          document.getElementById('resetSaveBtn').onclick = function () {
+            fetch('http://localhost:8080/resetPasswordFaculty', {
+              method: 'PATCH',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                password: document.getElementById('resetPassword').value,
+                id: document.getElementById('passwordId').value,
+              })
+            })
+              .then(response => response.json())
+              .then(result => {
+
+                window.location.reload();
+              })
+              .catch(err => console.error(err));
+          }
+        }
+      })
+
+      document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.onclick = function () {
+          const id = btn.dataset.id;
+
+          fetch('http://localhost:8080/deleteFaculty', {
+            method: 'DELETE',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              id: id
+            })
+          })
+            .then(response => response.json())
+            .then(result => {
+
+              window.location.reload();
+            })
+            .catch(err => console.error(err));
+        }
+      })
     })
     .catch(err => console.error(err));
-
-
 
 
 

@@ -224,7 +224,7 @@ app.get('/users', function (req, res) {
     });
 });
 
-// faculty
+// faculty (create)
 app.post('/faculty', function (req, res) {
 
     const fullname = req.body.fullname;
@@ -235,7 +235,7 @@ app.post('/faculty', function (req, res) {
     const hash = bcrypt.hashSync(password, 10)
 
     const myQuery = `INSERT INTO faculty 
-        (fullname, email, department, password) VALUES ("${fullname}", "${email}", "${department}", "${password}")`;
+        (fullname, email, department, password) VALUES ("${fullname}", "${email}", "${department}", "${hash}")`;
 
     db.query(myQuery, function (err, result) {
         if (err) throw err;
@@ -245,7 +245,7 @@ app.post('/faculty', function (req, res) {
     res.send({ 'redirect': '/' });
 })
 
-// faculty table
+// faculty (read)
 app.get('/facultyTable', function (req, res) {
 
     const myQuery = `SELECT * FROM faculty`;
@@ -256,6 +256,53 @@ app.get('/facultyTable', function (req, res) {
         }
     });
 })
+
+// faculty (update)
+app.patch('/updateFaculty', function (req, res) {
+
+    const id = req.body.id;
+    const fullname = req.body.fullname;
+    const email = req.body.email;
+    const department = req.body.department;
+
+    const myQuery = `UPDATE faculty SET fullname = '${fullname}', email = '${email}', department = '${department}' WHERE user_id = '${id}'`;
+
+    db.query(myQuery, function (err, rows) {
+        if (err) throw err;
+        res.send({ 'redirect': '/admin/user-management/faculty' });
+    });
+})
+
+// faculty (reset)
+app.patch('/resetPasswordFaculty', function (req, res) {
+
+    const id = req.body.id;
+    const password = req.body.password;
+
+    const hash = bcrypt.hashSync(password, 10)
+    const myQuery = `UPDATE faculty SET password = '${hash}' WHERE user_id = '${id}'`;
+
+    db.query(myQuery, function (err, rows) {
+        if (err) throw err;
+        res.send({ 'redirect': '/admin/user-management/faculty' });
+    });
+})
+
+// faculty (delete)
+app.delete('/deleteFaculty', function (req, res) {
+
+    const userId = req.body.id;
+
+    const myQuery = `DELETE FROM faculty WHERE user_id = ${userId}`;
+
+    db.query(myQuery, function (err, result) {
+        if (err) throw err;
+
+        res.send({ 'success': 'Successfully Deleted' });
+    });
+
+})
+
 // <<<<<<<<<<<<<<<<<<
 
 app.listen(port, () => { console.log(`http://localhost:${port}`) });
