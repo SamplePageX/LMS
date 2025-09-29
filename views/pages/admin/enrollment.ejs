@@ -1,23 +1,279 @@
+<style>
+  body {
+    background: #f0f0f0;
+    /* plain grey background */
+  }
+
+  .student-box {
+    background: #fff;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+</style>
+
 <div class="content">
-    <div class="pb-5">
-        <div class="row g-4">
-            <div class="col-12 col-xxl-6">
-                <div class="mb-8">
-                    <h2 class="mb-2">Enrollment</h2>
-                    <h5 class="text-body-tertiary fw-semibold">Manage enrolled students</h5>
+  <div class="pb-5">
+    <div class="row g-4">
+      <div class="col-12 col-xxl-6">
+        <div class="mb-8">
+          <h2 class="mb-2">Enrollment</h2>
+          <h5 class="text-body-tertiary fw-semibold">Manage enrolled students</h5>
+        </div>
+        <div class="container mt-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="m-0">Enrollment Management</h3>
+            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#enrollModal">+ Enroll
+              Student</button>
+          </div>
+
+
+          <div class="row g-2 mb-3">
+            <div class="col-md-4">
+              <input type="text" class="form-control" placeholder="Search by name">
+            </div>
+            <div class="col-md-3">
+              <select class="form-select">
+                <option value="">Course</option>
+                <option>BSIT</option>
+                <option>BSN</option>
+                <option>BPED</option>
+                <option>BPA</option>
+                <option>BSCS</option>
+                <option>BSBA</option>
+                <option>BSED</option>
+              </select>
+            </div>
+
+            <div class="col-md-3">
+              <select class="form-select">
+                <option value="">Status</option>
+                <option>Active</option>
+                <option>Pending</option>
+                <option>Completed</option>
+              </select>
+            </div>
+            <div class="col-md-2 d-grid">
+              <button class="btn btn-secondary">Search</button>
+            </div>
+          </div>
+
+          <div class="list-container">
+
+          </div>
+        </div>
+
+
+        <div class="modal fade" id="enrollModal" tabindex="-1">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Enroll Student</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+
+
+              <div class="modal-body">
+                <div class="mb-2">
+                  <label class="form-label">Course</label>
+                  <input type="text" id="course" class="form-control" placeholder="example BSIT">
                 </div>
-                <!-- Contents here... -->
+
+
+                <div class="mb-2">
+                  <label class="form-label">Student</label>
+                  <input type="text" id="student" class="form-control" placeholder="example Sarah Mae Aliman">
+                </div>
+
+
+                <div class="mb-2">
+                  <label class="form-label">Enrollment Date</label>
+                  <input id="date" type="date" class="form-control">
+                </div>
+              </div>
+
+              <div class="modal-footer">
+                <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                <button id="saveBtn" class="btn btn-primary btn-sm">Save</button>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
-    <footer class="footer position-absolute">
-        <div class="row g-0 justify-content-between align-items-center h-100">
-            <div class="col-12 col-sm-auto text-center">
-                <p class="mb-0 mt-2 mt-sm-0 text-body">© 2025 LMS</p>
-            </div>
-            <div class="col-12 col-sm-auto text-center">
-                
-            </div>
-        </div>
-    </footer>
+  </div>
+  <footer class="footer position-absolute">
+    <div class="row g-0 justify-content-between align-items-center h-100">
+      <div class="col-12 col-sm-auto text-center">
+        <p class="mb-0 mt-2 mt-sm-0 text-body">© 2025 LMS</p>
+      </div>
+      <div class="col-12 col-sm-auto text-center">
+
+      </div>
+    </div>
+  </footer>
 </div>
+
+<script>
+  fetch('http://localhost:8080/get-enrollment')
+    .then(response => response.json())
+    .then(data => {
+      let enrollmentListHTML = '';
+
+      if (data.enrollment === 'No records') {
+        enrollmentListHTML = '<h3>No records</h3>';
+      } else {
+        data.enrollment.forEach(enrollment => {
+          let date = new Date(enrollment.date_of_enrollment);
+          let month = date.getMonth();
+          let day = date.getDate();
+          let year = date.getFullYear();
+
+          let months = [
+            'Jan',
+            'Feb',
+            'Mar',
+            'Apr',
+            'May',
+            'Jun',
+            'Jul',
+            'Aug',
+            'Sep',
+            'Oct',
+            'Nov',
+            'Dec'
+          ];
+
+          enrollmentListHTML += `
+          <div class="student-box d-flex justify-content-between">
+            <div>
+              <strong>${enrollment.student}</strong><br>
+              <small>${enrollment.course} — ${months[month]} ${day}, ${year}</small>
+            </div>
+            <div>
+              <button data-bs-target="#editEnrollmentModal${enrollment.id}" data-bs-toggle="modal" class="btn btn-sm btn-outline-primary">Edit</button>
+              <button data-enrollment-id="${enrollment.id}" class="remove-enrollment-btn btn btn-sm btn-outline-danger">Remove</button>
+            </div>
+            
+            <div class="modal fade" id="editEnrollmentModal${enrollment.id}" tabindex="-1">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Edit Enrollment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                  </div>
+
+
+                  <div class="modal-body">
+                    <div class="mb-2">
+                      <label class="form-label">Course</label>
+                      <input type="text" id="editCourse${enrollment.id}" value="${enrollment.course}" class="form-control"/>
+                    </div>
+
+
+                    <div class="mb-2">
+                      <label class="form-label">Student</label>
+                      <input type="text" id="editStudent${enrollment.id}" value="${enrollment.student}" class="form-control"/>
+                    </div>
+
+
+                    <div class="mb-2">
+                      <label class="form-label">Enrollment Date</label>
+                      <input id="editDate${enrollment.id}" type="date" value="${enrollment.date_of_enrollment.slice(0, 10)}" class="form-control"/>
+                    </div>
+                  </div>
+
+                  <div class="modal-footer">
+                    <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                    <button data-enrollment-id="${enrollment.id}" class="edit-enrollment-btn btn btn-primary btn-sm">Update</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+        });
+      }
+
+      document.querySelector('.list-container').innerHTML = enrollmentListHTML;
+
+      document.querySelectorAll('.edit-enrollment-btn').forEach(btn => {
+        btn.onclick = function () {
+          const enrollmentId = btn.dataset.enrollmentId;
+          const course = document.getElementById(`editCourse${enrollmentId}`).value;
+          const student = document.getElementById(`editStudent${enrollmentId}`).value;
+          const date = document.getElementById(`editDate${enrollmentId}`).value;
+
+          fetch('http://localhost:8080/update-enrollment', {
+            method: 'PATCH',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              enrollmentId: enrollmentId,
+              course: course,
+              student: student,
+              date: date,
+            })
+          })
+            .then(response => response.json())
+            .then(result => {
+
+              window.location.reload();
+            })
+            .catch(err => console.error(err));
+        }
+      });
+
+      document.querySelectorAll('.remove-enrollment-btn').forEach(btn => {
+        btn.onclick = function () {
+          const enrollment_id = btn.dataset.enrollmentId;
+
+          fetch('http://localhost:8080/remove-enrollment', {
+            method: 'DELETE',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              id: enrollment_id
+            })
+          })
+            .then(response => response.json())
+            .then(result => {
+
+              window.location.reload();
+            })
+            .catch(err => console.error(err));
+        }
+      });
+    })
+    .catch(err => console.error(err));
+
+  document.getElementById('saveBtn').onclick = function () {
+    const course = document.getElementById('course').value;
+    const student = document.getElementById('student').value;
+    const date = document.getElementById('date').value;
+
+    fetch('http://localhost:8080/create-enrollment', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        course: course,
+        student: student,
+        date: date,
+      })
+    })
+      .then(response => response.json())
+      .then(result => {
+
+        window.location.reload();
+      })
+      .catch(err => console.error(err));
+  }
+</script>

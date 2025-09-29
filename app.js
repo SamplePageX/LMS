@@ -303,6 +303,74 @@ app.delete('/deleteFaculty', function (req, res) {
 
 })
 
+// Enrollment Section
+// enrollment (read)
+app.get('/get-enrollment', function (req, res) {
+
+    const myQuery = `SELECT * FROM enrollment`;
+
+    db.query(myQuery, function (err, rows) {
+        if (rows) {
+            if (rows.length > 0) {
+                res.send({ 'enrollment': rows });
+            } else {
+                res.send({ 'enrollment': 'No records' });
+            }
+        } else {
+            res.send({ 'enrollment': 'No records' });
+        }
+    });
+})
+
+// enrollment (create)
+app.post('/create-enrollment', function (req, res) {
+
+    const course = req.body.course;
+    const student = req.body.student;
+    const date = req.body.date;
+
+    const myQuery = `INSERT INTO enrollment 
+        (course, student, date_of_enrollment) VALUES ("${course}", "${student}", "${date}")`;
+
+    db.query(myQuery, function (err, result) {
+        if (err) throw err;
+        console.log("result from database: ", result);
+    });
+
+    res.send({ 'success': 'Successfully Created' });
+})
+
+// enrollment (delete)
+app.delete('/remove-enrollment', function (req, res) {
+
+    const enrollmentId = req.body.id;
+
+    const myQuery = `DELETE FROM enrollment WHERE id = ${enrollmentId}`;
+
+    db.query(myQuery, function (err, result) {
+        if (err) throw err;
+
+        res.send({ 'success': 'Successfully Deleted' });
+    });
+
+})
+
+// enrollment (update)
+app.patch('/update-enrollment', function (req, res) {
+
+    const id = req.body.enrollmentId;
+    const course = req.body.course;
+    const student = req.body.student;
+    const date = req.body.date;
+
+    const myQuery = `UPDATE enrollment SET course = '${course}', student = '${student}', date_of_enrollment = '${date}' WHERE id = '${id}'`;
+
+    db.query(myQuery, function (err, rows) {
+        if (err) throw err;
+        res.send({ 'success': 'Successfully Updated' });
+    });
+})
+
 // <<<<<<<<<<<<<<<<<<
 
 app.listen(port, () => { console.log(`http://localhost:${port}`) });
