@@ -371,6 +371,72 @@ app.patch('/update-enrollment', function (req, res) {
     });
 })
 
+// Announcement Section
+// announcement (create)
+app.post('/create-announcement', function (req, res) {
+    const title = req.body.title;
+    const content = req.body.content;
+    const author = req.body.author;
+
+    const myQuery = `INSERT INTO announcements (title, content, author) VALUES ('${title}', '${content}', '${author}')`;
+
+    db.query(myQuery, function (err, result) {
+        if (err) throw err;
+        console.log("result from database: ", result);
+    });
+
+    res.send({'success': 'Successfully Created!'});
+})
+
+// annoucement (read)
+app.get('/get-annoucement', function (req, res) {
+
+    const myQuery = `SELECT * FROM announcements`;
+
+    db.query(myQuery, function (err, rows) {
+        if (rows) {
+            if (rows.length > 0) {
+                res.send({ 'announcements': rows });
+            } else {
+                res.send({ 'announcements': 'No records' });
+            }
+        } else {
+            res.send({ 'announcements': 'No records' });
+        }
+    });
+})
+
+// announcement (update)
+app.patch('/update-announcement', function (req, res) {
+
+    const id = req.body.announcementId;
+    const title = req.body.title;
+    const content = req.body.content;
+    const author = req.body.author;
+
+    const myQuery = `UPDATE announcements SET title = '${title}', content = '${content}', author = '${author}' WHERE id = ${id}`;
+
+    db.query(myQuery, function (err, rows) {
+        if (err) throw err;
+        res.send({ 'success': 'Successfully Updated' });
+    });
+})
+
+// announcement (delete)
+app.delete('/delete-announcement', function (req, res) {
+
+    const annoucementId = req.body.id;
+
+    const myQuery = `DELETE FROM announcements WHERE id = ${annoucementId}`;
+
+    db.query(myQuery, function (err, result) {
+        if (err) throw err;
+
+        res.send({ 'success': 'Successfully Deleted' });
+    });
+
+})
+
 // <<<<<<<<<<<<<<<<<<
 
 app.listen(port, () => { console.log(`http://localhost:${port}`) });
