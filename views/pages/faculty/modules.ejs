@@ -1,23 +1,237 @@
 <div class="content">
-    <div class="pb-5">
-        <div class="row g-4">
-            <div class="col-12 col-xxl-6">
-                <div class="mb-8">
-                    <h2 class="mb-2">Modules</h2>
-                    <h5 class="text-body-tertiary fw-semibold">Manage faculty credentials</h5>
-                </div>
-                <!-- Contents here... -->
-            </div>
+  <div class="pb-5">
+    <div class="row g-4">
+      <div class="col-12 col-xxl-8">
+        <div class="mb-4">
+          <h2 class="mb-2">Course Modules</h2>
+          <h5 class="text-body-tertiary fw-semibold">
+            Manage weekly modules and uploaded materials
+          </h5>
         </div>
+
+        <!-- Add New Module Form -->
+        <div class="card p-3 shadow-sm mb-4">
+          <h6 class="fw-bold">Add New Material</h6>
+          <div class="row">
+            <!-- Week Selector -->
+            <div class="col-md-2">
+              <label for="week" class="form-label">Week</label>
+              <select id="week" class="form-select form-select-sm" required>
+                <option value="">Select</option>
+                <option value="Week 1">Week 1</option>
+                <option value="Week 2">Week 2</option>
+                <option value="Week 3">Week 3</option>
+                <option value="Week 4">Week 4</option>
+              </select>
+            </div>
+
+            <!-- Title -->
+            <div class="col-md-4">
+              <label for="title" class="form-label">Title</label>
+              <input type="text" id="title" class="form-control form-control-sm" placeholder="Enter material title"
+                required>
+            </div>
+
+            <!-- Upload -->
+            <div class="col-md-3">
+              <label for="fileUpload" class="form-label">Upload File</label>
+              <input type="file" id="fileUpload" class="form-control form-control-sm" accept=".pdf,.doc,.ppt,.mp4"
+                required>
+            </div>
+
+            <!-- Deadline -->
+            <div class="col-md-3">
+              <label for="deadline" class="form-label">Deadline</label>
+              <input type="date" id="deadline" class="form-control form-control-sm" required>
+            </div>
+
+            <!-- Submit -->
+            <div class="col-12 text-end mt-3">
+              <button type="submit" id="submitBtn" class="btn btn-success btn-sm">Add Module</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Module Table -->
+        <div class="table-responsive">
+          <table class="table table-sm table-bordered align-middle" id="moduleTable">
+            <thead class="table-light">
+              <tr>
+                <th>Week</th>
+                <th>Title</th>
+                <th>File</th>
+                <th>Deadline</th>
+                <th class="text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody id="moduleTable">
+              <!-- Dynamic rows will appear here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
-    <footer class="footer position-absolute">
-        <div class="row g-0 justify-content-between align-items-center h-100">
-            <div class="col-12 col-sm-auto text-center">
-                <p class="mb-0 mt-2 mt-sm-0 text-body">© 2025 LMS</p>
-            </div>
-            <div class="col-12 col-sm-auto text-center">
-                
-            </div>
-        </div>
-    </footer>
+  </div>
 </div>
+
+<footer class="footer position-absolut">
+  <div class="row g-0 justify-content-between align-items-center h-100">
+    <div class="col-12 col-sm-auto text-center">
+      <p class="mb-0 mt-2 mt-sm-0 text-body">© 2025 LMS</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  fetch('http://localhost:8080/get-modules')
+    .then(response => response.json())
+    .then(data => {
+      let moduleHTML = '';
+
+      data.modules.forEach(module => {
+        moduleHTML += `
+      <tr>
+        <td>${module.week}</td>
+          <td>${module.title}</td>
+          <td><a href="#" class="text-decoration-none text-primary">${module.file_name}</a></td>
+          <td>${module.deadline.slice(0, 10)}</td>
+          <td class="text-center">
+          <button data-module-id="${module.id}" data-bs-target="#editModuleModal${module.id}" data-bs-toggle="modal" class="btn btn-sm btn-primary">Edit</button>
+            <div class="modal fade" id="editModuleModal${module.id}" tabindex="-1" aria-hidden="true">
+              <div class="modal-dialog">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title">Edit Module</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                      </div>
+                      <div class="modal-body">
+                          <!-- Week Selector -->
+                            <div>
+                              <label for="week" class="form-label">Week</label>
+                              <select id="editWeek${module.id}" class="form-select form-select-sm" required>
+                                <option value="">Select</option>
+                                <option value="Week 1" ${module.week === 'Week 1' ? 'selected' : ''}>Week 1</option>
+                                <option value="Week 2" ${module.week === 'Week 2' ? 'selected' : ''}>Week 2</option>
+                                <option value="Week 3" ${module.week === 'Week 3' ? 'selected' : ''}>Week 3</option>
+                                <option value="Week 4" ${module.week === 'Week 4' ? 'selected' : ''}>Week 4</option>
+                              </select>
+                            </div>
+
+                            <!-- Title -->
+                            <div>
+                              <label for="title" class="form-label">Title</label>
+                              <input type="text" id="editTitle${module.id}" class="form-control form-control-sm" value="${module.title}"
+                                required>
+                            </div>
+
+                            <!-- Upload -->
+                            <div>
+                              <label for="fileUpload" class="form-label">Upload File</label>
+                              <input type="file" id="editFileUpload${module.id}" value="${module.file_name}" class="form-control form-control-sm" accept=".pdf,.doc,.ppt,.mp4"
+                                required>
+                            </div>
+
+                            <!-- Deadline -->
+                            <div>
+                              <label for="deadline" class="form-label">Deadline</label>
+                              <input type="date" id="editDeadline${module.id}" value="${module.deadline.slice(0, 10)}" class="form-control form-control-sm" required>
+                            </div>
+                      </div>
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                          <button type="button" data-module-id="${module.id}" class="edit-module-btn btn btn-primary">Update</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <button data-module-id="${module.id}" class="delete-module-btn btn btn-sm btn-danger">Delete</button>
+        </td>
+      </tr>
+      `;
+      })
+
+      document.getElementById('moduleTable').innerHTML = moduleHTML;
+
+      document.querySelectorAll('.edit-module-btn').forEach(btn => {
+        btn.onclick = function () {
+          const moduleId = btn.dataset.moduleId;
+          const week = document.getElementById(`editWeek${moduleId}`).value;
+          const title = document.getElementById(`editTitle${moduleId}`).value;
+          const fileInput = document.getElementById(`editFileUpload${moduleId}`);
+          const author = document.getElementById(`editDeadline${moduleId}`).value;
+
+          fetch('http://localhost:8080/update-module', {
+            method: 'PATCH',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              moduleId: moduleId,
+              week: week,
+              title: title,
+              fileName: fileInput.value,
+              deadline: deadline
+            })
+          })
+            .then(response => response.json())
+            .then(result => {
+
+              window.location.reload();
+            })
+            .catch(err => console.error(err));
+        }
+      });
+
+      document.querySelectorAll('.delete-module-btn').forEach(btn => {
+        btn.onclick = function () {
+          const moduleId = btn.dataset.moduleId;
+
+          fetch('http://localhost:8080/delete-module', {
+            method: 'DELETE',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              id: moduleId
+            })
+          })
+            .then(response => response.json())
+            .then(result => {
+
+              window.location.reload();
+            })
+            .catch(err => console.error(err));
+        }
+      });
+    })
+    .catch(err => console.error(err));
+
+  document.getElementById('submitBtn').onclick = function () {
+    const week = document.getElementById("week").value;
+    const title = document.getElementById("title").value.trim();
+    const fileInput = document.getElementById("fileUpload");
+    const deadline = document.getElementById("deadline").value;
+
+    fetch('http://localhost:8080/create-module', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        week: week,
+        title: title,
+        fileName: fileInput.value,
+        deadline: deadline
+      })
+    })
+      .then(response => response.json())
+      .then(result => {
+
+        window.location.reload();
+      })
+      .catch(err => console.error(err));
+  }
+</script>

@@ -437,6 +437,147 @@ app.delete('/delete-announcement', function (req, res) {
 
 })
 
+// Modules Section
+// module (create)
+app.post('/create-module', function (req, res) {
+    const week = req.body.week;
+    const title = req.body.title;
+    const fileName = req.body.fileName;
+    const deadline = req.body.deadline;
+
+    const myQuery = `INSERT INTO modules (week, title, file_name, deadline) VALUES ('${week}', '${title}', '${fileName}', '${deadline}')`;
+
+    db.query(myQuery, function (err, result) {
+        if (err) throw err;
+        console.log("result from database: ", result);
+    });
+
+    res.send({'success': 'Successfully Created!'});
+})
+
+// module (read)
+app.get('/get-modules', function (req, res) {
+
+    const myQuery = `SELECT * FROM modules`;
+
+    db.query(myQuery, function (err, rows) {
+        if (rows) {
+            if (rows.length > 0) {
+                res.send({ 'modules': rows });
+            } else {
+                res.send({ 'modules': 'No records' });
+            }
+        } else {
+            res.send({ 'modules': 'No records' });
+        }
+    });
+})
+
+// module (delete)
+app.delete('/delete-module', function (req, res) {
+
+    const moduleId = req.body.id;
+
+    const myQuery = `DELETE FROM modules WHERE id = ${moduleId}`;
+
+    db.query(myQuery, function (err, result) {
+        if (err) throw err;
+
+        res.send({ 'success': 'Successfully Deleted' });
+    });
+
+})
+
+
+// module (update)
+app.patch('/update-module', function (req, res) {
+
+    const id = req.body.moduleId;
+    const week = req.body.week;
+    const title = req.body.title;
+    const fileName = req.body.fileName;
+    const deadline = req.body.deadline;
+
+    const myQuery = `UPDATE modules SET week = '${week}', title = '${title}', file_name = '${fileName}', deadline = '${deadline}' WHERE id = ${id}`;
+
+    db.query(myQuery, function (err, rows) {
+        if (err) throw err;
+        res.send({ 'success': 'Successfully Updated' });
+    });
+})
+
+// Assignment Section
+// assignment (create)
+app.post('/create-assignment', function (req, res) {
+    const title = req.body.title;
+    const instructions = req.body.instructions;
+    const points = req.body.points;
+    const dueDate = req.body.dueDate;
+    const submissionType = req.body.submissionType;
+    const rubrics = req.body.rubrics;
+
+    const myQuery = `INSERT INTO assignments (title, instructions, points, due_date, submission_type, rubrics) VALUES ('${title}', '${instructions}', '${points}', '${dueDate}', '${submissionType}', '${rubrics}')`;
+
+    db.query(myQuery, function (err, result) {
+        if (err) throw err;
+        console.log("result from database: ", result);
+    });
+
+    res.send({'success': 'Successfully Created!'});
+})
+
+// assignment (read)
+app.get('/get-assignments', function (req, res) {
+
+    const myQuery = `SELECT * FROM assignments`;
+
+    db.query(myQuery, function (err, rows) {
+        if (rows) {
+            if (rows.length > 0) {
+                res.send({ 'assignments': rows });
+            } else {
+                res.send({ 'assignments': 'No records' });
+            }
+        } else {
+            res.send({ 'assignments': 'No records' });
+        }
+    });
+})
+
+// assignment (update)
+app.patch('/update-assignment', function (req, res) {
+
+    const id = req.body.assignmentId;
+    const title = req.body.title;
+    const instructions = req.body.instructions;
+    const points = req.body.points;
+    const dueDate = req.body.dueDate;
+    const submissionType = req.body.submissionType;
+    const rubrics = req.body.rubrics;
+
+    const myQuery = `UPDATE assignments SET title = '${title}', instructions = '${instructions}', points = '${points}', due_date = '${dueDate}', submission_type = '${submissionType}', rubrics = '${rubrics}' WHERE id = ${id}`;
+
+    db.query(myQuery, function (err, rows) {
+        if (err) throw err;
+        res.send({ 'success': 'Successfully Updated' });
+    });
+})
+
+// assignment (delete)
+app.delete('/delete-assignment', function (req, res) {
+
+    const assignmentId = req.body.id;
+
+    const myQuery = `DELETE FROM assignments WHERE id = ${assignmentId}`;
+
+    db.query(myQuery, function (err, result) {
+        if (err) throw err;
+
+        res.send({ 'success': 'Successfully Deleted' });
+    });
+
+})
+
 // <<<<<<<<<<<<<<<<<<
 
 app.listen(port, () => { console.log(`http://localhost:${port}`) });

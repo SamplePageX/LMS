@@ -6,7 +6,184 @@
                     <h2 class="mb-2">Assignments</h2>
                     <h5 class="text-body-tertiary fw-semibold">Manage your assignments for students</h5>
                 </div>
-                <!-- Contents here... -->
+                <div class="container py-4">
+                    <!-- Assignments Table -->
+                    <div class="card mb-4 shadow-sm">
+                        <div
+                            class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
+                            <span>All Assignments</span>
+                            <!-- Button to trigger Create modal -->
+                            <button class="btn btn-light btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#createAssignmentModal">
+                                + Create Assignment
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-striped table-hover align-middle">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Due Date</th>
+                                        <th>Points</th>
+                                        <th>Submissions</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="assignmentTable">
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Create Assignment Modal -->
+                <div class="modal fade" id="createAssignmentModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header bg-secondary text-white">
+                                <h5 class="modal-title text-white">Create Assignment</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label class="form-label">Title</label>
+                                    <input id="title" type="text" class="form-control"
+                                        placeholder="Enter assignment title">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Instructions</label>
+                                    <textarea id="instructions" class="form-control" rows="3"
+                                        placeholder="Write assignment details..."></textarea>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-4">
+                                        <label class="form-label">Points</label>
+                                        <input id="points" type="number" class="form-control" placeholder="100">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Due Date</label>
+                                        <input id="dueDate" type="date" class="form-control">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Submission Type</label>
+                                        <select id="submissionType" class="form-select">
+                                            <option value="">File Upload</option>
+                                            <option value="ONLINE_TEXT">Online Text</option>
+                                            <option value="LINK_SUBMISSION">Link Submission</option>
+                                            <option value="QUIZ">Quiz</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Rubrics</label>
+                                    <textarea id="rubrics" class="form-control" rows="2"
+                                        placeholder="Add rubric or grading criteria"></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button id="createAssignmentBtn" class="btn btn-primary">Create</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Grade Assignment Modal -->
+                <div class="modal fade" id="gradeAssignmentModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header bg-success text-white">
+                                <h5 class="modal-title text-white">Grade Assignment</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <table class="table table-bordered align-middle">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Student</th>
+                                            <th>Submission</th>
+                                            <th>Grade</th>
+                                            <th>Feedback</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Juan Dela Cruz</td>
+                                            <td><a href="#">Essay.pdf</a></td>
+                                            <td><input type="number" class="form-control form-control-sm" value="85">
+                                            </td>
+                                            <td><input type="text" class="form-control form-control-sm"
+                                                    value="Good work!"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Maria Santos</td>
+                                            <td>-</td>
+                                            <td><input type="number" class="form-control form-control-sm"
+                                                    placeholder="Score"></td>
+                                            <td><input type="text" class="form-control form-control-sm"
+                                                    placeholder="Feedback"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button class="btn btn-success">Save Grades</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submissions Modal -->
+                <div class="modal fade" id="submissionsModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-xl modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header bg-primary text-white">
+                                <h5 class="modal-title">Student Submissions</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <table class="table table-bordered align-middle">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Student</th>
+                                            <th>Status</th>
+                                            <th>Submission</th>
+                                            <th>Grade</th>
+                                            <th>Feedback</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Juan Dela Cruz</td>
+                                            <td><span class="badge bg-success">Submitted</span></td>
+                                            <td><a href="#">Essay.pdf</a></td>
+                                            <td><input type="number" class="form-control form-control-sm"
+                                                    placeholder="Score"></td>
+                                            <td><input type="text" class="form-control form-control-sm"
+                                                    placeholder="Feedback"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Maria Santos</td>
+                                            <td><span class="badge bg-danger">Not Submitted</span></td>
+                                            <td>-</td>
+                                            <td><input type="number" class="form-control form-control-sm"
+                                                    placeholder="Score"></td>
+                                            <td><input type="text" class="form-control form-control-sm"
+                                                    placeholder="Feedback"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button class="btn btn-primary">Save Grades</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -16,8 +193,180 @@
                 <p class="mb-0 mt-2 mt-sm-0 text-body">© 2025 LMS</p>
             </div>
             <div class="col-12 col-sm-auto text-center">
-                
+
             </div>
         </div>
     </footer>
 </div>
+
+<script>
+    fetch('http://localhost:8080/get-assignments')
+        .then(response => response.json())
+        .then(data => {
+            let assignmentHTML = '';
+
+            data.assignments.forEach(assignment => {
+                assignmentHTML += `
+                    <tr>
+                        <td>${assignment.title}</td>
+                        <td>${assignment.due_date.slice(0, 10)}</td>
+                        <td>${assignment.points}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                                data-bs-target="#submissionsModal">
+                                0 / 0
+                            </button>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-info" data-bs-toggle="modal"
+                                data-bs-target="#editAssignmentModal${assignment.id}">Edit</button>
+                            <!-- Edit Assignment Modal -->
+                                <div class="modal fade" id="editAssignmentModal${assignment.id}" tabindex="-1" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header bg-info text-white">
+                                                <h5 class="modal-title text-white">Edit Assignment</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Title</label>
+                                                        <input id="editTitle${assignment.id}" type="text" class="form-control" value="${assignment.title}">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Instructions</label>
+                                                        <textarea id="editInstructions${assignment.id}" class="form-control"
+                                                            rows="3">${assignment.instructions}</textarea>
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-4">
+                                                            <label class="form-label">Points</label>
+                                                            <input type="number" id="editPoints${assignment.id}" class="form-control" value="${assignment.points}">
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label class="form-label">Due Date</label>
+                                                            <input type="date" id="editDueDate${assignment.id}" class="form-control" value="${assignment.due_date.slice(0, 10)}">
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label class="form-label">Submission Type</label>
+                                                            <select id="editSubmissionType${assignment.id}" class="form-select">
+                                                                <option selected>File Upload</option>
+                                                                <option value="ONLINE_TEXT" ${assignment.submission_type === 'ONLINE_TEXT' ? 'selected' : ''}>Online Text</option>
+                                                                <option value="LINK_SUBMISSION" ${assignment.submission_type === 'LINK_SUBMISSION' ? 'selected' : ''}>Link Submission</option>
+                                                                <option value="QUIZ" ${assignment.submission_type === 'QUIZ' ? 'selected' : ''}>Quiz</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Rubrics</label>
+                                                        <textarea id="editRubrics${assignment.id}" class="form-control" rows="2">${assignment.rubrics}</textarea>
+                                                    </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                <button data-assignment-id="${assignment.id}" class="edit-assignment-btn btn btn-info">Save Changes</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <button class="btn btn-sm btn-success" data-bs-toggle="modal"
+                                data-bs-target="#gradeAssignmentModal${assignment.id}">Grade</button>
+                            <button data-assignment-id="${assignment.id}" class="delete-assignment-btn btn btn-sm btn-danger">Delete</button>
+                        </td>
+                    </tr>
+                `;
+            })
+
+            document.getElementById('assignmentTable').innerHTML = assignmentHTML;
+
+            document.querySelectorAll('.edit-assignment-btn').forEach(btn => {
+                btn.onclick = function () {
+                    const assignmentId = btn.dataset.assignmentId;
+                    const title = document.getElementById(`editTitle${assignmentId}`).value.trim();
+                    const instructions = document.getElementById(`editInstructions${assignmentId}`).value.trim();
+                    const points = document.getElementById(`editPoints${assignmentId}`).value;
+                    const dueDate = document.getElementById(`editDueDate${assignmentId}`).value;
+                    const submissionType = document.getElementById(`editSubmissionType${assignmentId}`).value;
+                    const rubrics = document.getElementById(`editRubrics${assignmentId}`).value.trim();
+
+                    fetch('http://localhost:8080/update-assignment', {
+                        method: 'PATCH',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            assignmentId: assignmentId,
+                            title: title,
+                            instructions: instructions,
+                            points: points,
+                            dueDate: dueDate,
+                            submissionType: submissionType,
+                            rubrics: rubrics
+                        })
+                    })
+                        .then(response => response.json())
+                        .then(result => {
+
+                            window.location.reload();
+                        })
+                        .catch(err => console.error(err));
+                }
+            });
+
+            document.querySelectorAll('.delete-assignment-btn').forEach(btn => {
+                btn.onclick = function () {
+                    const assignmentId = btn.dataset.assignmentId;
+
+                    fetch('http://localhost:8080/delete-assignment', {
+                        method: 'DELETE',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            id: assignmentId
+                        })
+                    })
+                        .then(response => response.json())
+                        .then(result => {
+
+                            window.location.reload();
+                        })
+                        .catch(err => console.error(err));
+                }
+            });
+        })
+        .catch(err => console.error(err));
+
+    document.getElementById('createAssignmentBtn').onclick = function () {
+        const title = document.getElementById("title").value.trim();
+        const instructions = document.getElementById("instructions").value.trim();
+        const points = document.getElementById("points").value;
+        const dueDate = document.getElementById("dueDate").value;
+        const submissionType = document.getElementById("submissionType").value;
+        const rubrics = document.getElementById("rubrics").value.trim();
+
+        fetch('http://localhost:8080/create-assignment', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                title: title,
+                instructions: instructions,
+                points: points,
+                dueDate: dueDate,
+                submissionType: submissionType,
+                rubrics: rubrics
+            })
+        })
+            .then(response => response.json())
+            .then(result => {
+
+                window.location.reload();
+            })
+            .catch(err => console.error(err));
+    }
+</script>
