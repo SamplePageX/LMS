@@ -1,23 +1,401 @@
 <div class="content">
-    <div class="pb-5">
-        <div class="row g-4">
-            <div class="col-12 col-xxl-6">
-                <div class="mb-8">
-                    <h2 class="mb-2">Student Accounts</h2>
-                    <h5 class="text-body-tertiary fw-semibold">Manage students credentials</h5>
+  <div class="pb-5">
+    <div class="row g-4">
+      <div class="col-12 col-xxl-6">
+        <div class="mb-8">
+          <h2 class="mb-2">Student Accounts</h2>
+          <h5 class="text-body-tertiary fw-semibold">Manage student credentials</h5>
+        </div>
+        <!-- Contents here... -->
+
+        <div id="tableExample3"
+          data-list="{&quot;valueNames&quot;:[&quot;name&quot;,&quot;email&quot;,&quot;age&quot;],&quot;page&quot;:5,&quot;pagination&quot;:true}">
+          <div class="search-box mb-3 mx-auto d-flex w-100 justify-content-between align-items-center">
+            <form class="position-relative"><input class="form-control search-input search form-control-sm"
+                type="search" placeholder="Search" aria-label="Search">
+              <svg class="svg-inline--fa fa-magnifying-glass search-box-icon" aria-hidden="true" focusable="false"
+                data-prefix="fas" data-icon="magnifying-glass" role="img" xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 512 512" data-fa-i2svg="">
+                <path fill="currentColor"
+                  d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z">
+                </path>
+              </svg><!-- <span class="fas fa-search search-box-icon"></span> Font Awesome fontawesome.com -->
+            </form>
+            <!-- modal for add Student -->
+            <div class="modal fade" id="verticallyCentered" tabindex="-1" aria-labelledby="verticallyCenteredModalLabel"
+              aria-hidden="true" style="display: none;">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="verticallyCenteredModalLabel">Add Student</h5><button
+                      class="btn btn-close p-1" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <!-- modal body (inputs)-->
+                  <!-- fullname -->
+                  <div class="modal-body">
+                    <div class="">
+                      <label class="form-label ">Full Name</label>
+                      <input class="form-control" id="fullname" placeholder="Full Name" type="text" required="" />
+                      <div class="valid-feedback">Looks good!</div>
+                    </div>
+                    <!-- email -->
+                    <div class="">
+                      <label class="form-label">Email</label>
+                      <div class="input-group has-validation">
+                        <span class="input-group-text" id="inputGroupPrepend">@</span>
+                        <input class="form-control" id="email" placeholder="you@example.com" type="text"
+                          aria-describedby="inputGroupPrepend" required="" />
+                        <div class="invalid-feedback">Please choose a username.</div>
+                      </div>
+                    </div>
+                    <!-- Course -->
+                    <div class="">
+                      <label class="form-label ">Course</label>
+                      <input class="form-control" id="course" placeholder="Ex: Computer Studies" type="text"
+                        required="" />
+                      <div class="valid-feedback">Looks good!</div>
+                    </div>
+                    <!-- password -->
+                    <div class="">
+                      <div class="mb-2 mb-sm-0"><label class="form-label text-body">Password*</label><input
+                          class="form-control" type="password" name="password" placeholder="Password" id="password"
+                          data-wizard-password="true" /></div>
+                    </div>
+                    <!-- confirm password -->
+                    <div class="">
+                      <div class="mb-2"><label class="form-label text-body"></label>Confirm Password*</label><input
+                          class="form-control" type="password" name="confirmPassword" placeholder="Confirm Password"
+                          id="confirmPassword" data-wizard-confirm-password="true" /></div>
+                    </div>
+                  </div>
+                  <!-- modal footer -->
+                  <div class="modal-footer"><button class="btn btn-primary" id="addStudentBtn"
+                      type="button">Save</button><button class="btn btn-outline-primary" type="button"
+                      data-bs-dismiss="modal">Cancel</button></div>
                 </div>
-                <!-- Contents here... -->
+              </div>
             </div>
+
+            <!-- new Student button -->
+            <div id="bulk-select-replace-element"><button class="btn btn-phoenix-success btn-sm" data-bs-toggle="modal"
+                data-bs-target="#verticallyCentered" type="button"><span class="fas fa-plus"
+                  data-fa-transform="shrink-3 down-2"></span><span class="ms-1">New</span></button></div>
+          </div>
+          <!-- end of modal for Student -->
+
+          <!-- start of table -->
+          <div class="table-responsive">
+            <table class="table  table-sm fs-9 mb-0">
+              <thead>
+                <tr>
+                  <th class="sort border-top border-translucent ps-3" data-sort="name">Name</th>
+                  <th class="sort border-top" data-sort="email">Email</th>
+                  <th class="sort border-top asc" data-sort="course">Course</th>
+                  <th class="sort text-end align-middle pe-0 border-top" scope="col">ACTION</th>
+                </tr>
+              </thead>
+
+              <tbody class="list" id="tableRow">
+                <!-- table row -->
+              </tbody>
+
+            </table>
+            <!-- end of table -->
+
+            <!--star of edit modal -->
+            <div class="modal fade" id="verticallyCentered1" tabindex="-1"
+              aria-labelledby="verticallyCenteredModalLabel" aria-hidden="true" style="display: none;">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="verticallyCenteredModalLabel">Edit</h5>
+                    <button class="btn btn-close p-1" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <input class="d-none" id="id" type="text" required="" />
+                    <div class="">
+                      <label class="form-label " for="validationCustom01">Full Name</label>
+                      <input class="form-control" id="editFullname" placeholder="Full Name" type="text" required="" />
+                      <div class="valid-feedback">Looks good!</div>
+                    </div>
+                    <div class="">
+                      <label class="form-label " for="validationCustom01">Email</label>
+                      <div class="input-group has-validation">
+                        <span class="input-group-text" id="inputGroupPrepend">@</span>
+                        <input class="form-control" id="editEmail" placeholder="you@example.com" type="text"
+                          aria-describedby="inputGroupPrepend" required="" />
+                        <div class="invalid-feedback">Please choose a username.</div>
+                      </div>
+                    </div>
+                    <div class="">
+                      <label class="form-label " for="validationCustom01">Course</label>
+                      <input class="form-control" id="editCourse" placeholder="Ex: Computer Studies" type="text"
+                        required="" />
+                      <div class="valid-feedback">Looks good!</div>
+                    </div>
+
+                  </div>
+                  <div class="modal-footer"><button class="btn btn-primary" id="saveEditBtn"
+                      type="button">Save</button><button class="btn btn-outline-primary" type="button"
+                      data-bs-dismiss="modal">Cancel</button></div>
+                </div>
+              </div>
+            </div>
+            <!-- end of edit modal -->
+
+            <!-- start of reset modal -->
+            <div class="modal fade" id="verticallyCentered2" tabindex="-1"
+              aria-labelledby="verticallyCenteredModalLabel" aria-hidden="true" style="display: none;">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+
+                    <h5 class="modal-title" id="verticallyCenteredModalLabel">Reset Password</h5><button
+                      class="btn btn-close p-1" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                   <input class="d-none" id="passwordId" type="text" required="" />
+                    <div class="">
+                      <div class="mb-2 mb-sm-0"><label class="form-label text-body"
+                          for="bootstrap-wizard-wizard-password">New Password*</label><input class="form-control"
+                          type="password" id="resetPassword" name="password" placeholder="Password" id="bootstrap-wizard-wizard-password"
+                          data-wizard-password="true" /></div>
+                    </div>
+
+                    <div class="">
+                      <div class="mb-2"><label class="form-label text-body"
+                          for="bootstrap-wizard-wizard-confirm-password">Confirm Password*</label><input
+                          class="form-control" type="password" name="confirmPassword" placeholder="Confirm Password"
+                          id="bootstrap-wizard-wizard-confirm-password" data-wizard-confirm-password="true" /></div>
+                    </div>
+
+                  </div>
+                  <div class="modal-footer"><button class="btn btn-primary" id="resetSaveBtn"
+                      type="button">Save</button><button class="btn btn-outline-primary" type="button"
+                      data-bs-dismiss="modal">Cancel</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- end of reset modal -->
+          </div>
+          <div class="d-flex justify-content-between mt-3"><span class="d-none d-sm-inline-block"
+              data-list-info="data-list-info">1 to 5 <span class="text-body-tertiary"> Items of </span>43</span>
+            <div class="d-flex"><button class="page-link disabled" data-list-pagination="prev" disabled=""><svg
+                  class="svg-inline--fa fa-chevron-left" aria-hidden="true" focusable="false" data-prefix="fas"
+                  data-icon="chevron-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"
+                  data-fa-i2svg="">
+                  <path fill="currentColor"
+                    d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z">
+                  </path>
+                </svg><!-- <span class="fas fa-chevron-left"></span> Font Awesome fontawesome.com --></button>
+              <ul class="mb-0 pagination">
+                <li class="active"><button class="page" type="button" data-i="1" data-page="5">1</button></li>
+                <li><button class="page" type="button" data-i="2" data-page="5">2</button></li>
+                <li><button class="page" type="button" data-i="3" data-page="5">3</button></li>
+                <li class="disabled"><button class="page" type="button">...</button></li>
+              </ul><button class="page-link pe-0" data-list-pagination="next"><svg
+                  class="svg-inline--fa fa-chevron-right" aria-hidden="true" focusable="false" data-prefix="fas"
+                  data-icon="chevron-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"
+                  data-fa-i2svg="">
+                  <path fill="currentColor"
+                    d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z">
+                  </path>
+                </svg><!-- <span class="fas fa-chevron-right"></span> Font Awesome fontawesome.com --></button>
+            </div>
+          </div>
         </div>
+
+      </div>
     </div>
-    <footer class="footer position-absolute">
-        <div class="row g-0 justify-content-between align-items-center h-100">
-            <div class="col-12 col-sm-auto text-center">
-                <p class="mb-0 mt-2 mt-sm-0 text-body">© 2025 LMS</p>
-            </div>
-            <div class="col-12 col-sm-auto text-center">
-                
-            </div>
-        </div>
-    </footer>
+  </div>
+  <footer class="footer position-absolute">
+    <div class="row g-0 justify-content-between align-items-center h-100">
+      <div class="col-12 col-sm-auto text-center">
+        <p class="mb-0 mt-2 mt-sm-0 text-body">© 2025 LMS</p>
+      </div>
+      <div class="col-12 col-sm-auto text-center">
+
+      </div>
+    </div>
+  </footer>
 </div>
+
+<script>
+  const fullname = document.getElementById('fullname');
+  const email = document.getElementById('email');
+  const course = document.getElementById('course');
+  const password = document.getElementById('password');
+  const confirmPassword = document.getElementById('confirmPassword');
+
+  const addStudentBtn = document.getElementById('addStudentBtn');
+  const editSaveBtn = document.getElementById('editSaveBtn');
+  const resetSaveBtn = document.getElementById('resetSaveBtn');
+
+  addStudentBtn.addEventListener('click', addStudent);
+
+
+  // Create
+  function addStudent() {
+
+    if (!fullname.value || !email.value || !course.value || !password.value || !confirmPassword.value) {
+      alert("Please fill out all fields.");
+      return;
+    }
+
+    if (confirmPassword.value != password.value) {
+      alert("Password does not match.")
+      return;
+    }
+
+    fetch('http://localhost:8080/student', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        fullname: fullname.value,
+        email: email.value,
+        course: course.value,
+        password: password.value
+      })
+    })
+      .then(response => response.json())
+      .then(result => {
+
+        window.location.reload();
+      })
+      .catch(err => console.error(err));
+  }
+
+
+  // Read
+  fetch('http://localhost:8080/studentTable')
+    .then(response => response.json())
+    .then(result => {
+      let studentTable = "";
+      result.data.forEach(row => {
+        studentTable += `<tr>
+                  <td class="align-middle ps-3 name">${row.fullname}</td>
+                  <td class="align-middle email">${row.email}</td>
+                  <td class="align-middle course">${row.course}</td>
+                  <td class="align-middle white-space-nowrap text-end pe-0">
+                    <div class="btn-reveal-trigger position-static"><button
+                        class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal fs-10"
+                        type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true"
+                        aria-expanded="false" data-bs-reference="parent"><svg class="svg-inline--fa fa-ellipsis fs-10"
+                          aria-hidden="true" focusable="false" data-prefix="fas" data-icon="ellipsis" role="img"
+                          xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="">
+                          <path fill="currentColor"
+                            d="M8 256a56 56 0 1 1 112 0A56 56 0 1 1 8 256zm160 0a56 56 0 1 1 112 0 56 56 0 1 1 -112 0zm216-56a56 56 0 1 1 0 112 56 56 0 1 1 0-112z">
+                          </path>
+                        </svg><!-- <span class="fas fa-ellipsis-h fs-10"></span> Font Awesome fontawesome.com --></button>
+                      <!-- action -->
+                      <div class="dropdown-menu dropdown-menu-end py-2">
+
+                        <!-- edit -->
+                        <a data-id="${row.student_id}" data-fullname="${row.fullname}" data-email="${row.email}" data-course="${row.course}" class="dropdown-item edit-btn" data-bs-toggle="modal" data-bs-target="#verticallyCentered1">Edit</a>
+                        <!-- reset password -->
+                        <a data-id="${row.student_id}" class="dropdown-item reset-btn" data-bs-toggle="modal" data-bs-target="#verticallyCentered2">Reset
+                          Password</a>
+                        <div class="dropdown-divider"></div><a data-id="${row.student_id}" class="dropdown-item text-danger delete-btn">Remove</a>
+                      </div>
+                    </div>
+                  </td>
+                </tr>`
+      })
+      document.getElementById('tableRow').innerHTML = studentTable;
+
+      document.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.onclick = function () {
+          const fullname = btn.dataset.fullname;
+          const email = btn.dataset.email;
+          const course = btn.dataset.course;
+          const id = btn.dataset.id;
+
+          document.getElementById('editFullname').value = fullname;
+          document.getElementById('editEmail').value = email;
+          document.getElementById('editCourse').value = course;
+          document.getElementById('id').value = id;
+          console.log(id);
+
+          document.getElementById('saveEditBtn').onclick = function () {
+            fetch('http://localhost:8080/updateStudent', {
+              method: 'PATCH',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                fullname: document.getElementById('editFullname').value,
+                email: document.getElementById('editEmail').value,
+                course: document.getElementById('editCourse').value,
+                id: document.getElementById('id').value,
+              })
+            })
+              .then(response => response.json())
+              .then(result => {
+
+                window.location.reload();
+              })
+              .catch(err => console.error(err));
+          }
+        }
+      })
+
+      document.querySelectorAll('.reset-btn').forEach(btn => {
+        btn.onclick = function () {
+          const id = btn.dataset.id;
+
+          document.getElementById('passwordId').value = id;
+          document.getElementById('resetSaveBtn').onclick = function () {
+            fetch('http://localhost:8080/resetPasswordStudent', {
+              method: 'PATCH',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                password: document.getElementById('resetPassword').value,
+                id: document.getElementById('passwordId').value,
+              })
+            })
+              .then(response => response.json())
+              .then(result => {
+
+                window.location.reload();
+              })
+              .catch(err => console.error(err));
+          }
+        }
+      })
+
+      document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.onclick = function () {
+          const id = btn.dataset.id;
+
+          fetch('http://localhost:8080/deleteStudent', {
+            method: 'DELETE',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              id: id
+            })
+          })
+            .then(response => response.json())
+            .then(result => {
+
+              window.location.reload();
+            })
+            .catch(err => console.error(err));
+        }
+      })
+    })
+    .catch(err => console.error(err));
+
+
+
+</script>

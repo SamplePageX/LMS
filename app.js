@@ -710,6 +710,139 @@ app.delete('/delete-course', function (req, res) {
 
 })
 
+// Students Section
+// student (create)
+app.post('/create-course', function (req, res) {
+    const courseCode = req.body.courseCode;
+    const title = req.body.title;
+    const coordinator = req.body.coordinator;
+    const department = req.body.department;
+
+    const myQuery = `INSERT INTO courses (course_code, title, instructor, department, status) VALUES ('${courseCode}', '${title}', '${coordinator}', '${department}', '1')`;
+
+    db.query(myQuery, function (err, result) {
+        if (err) throw err;
+        console.log("result from database: ", result);
+    });
+
+    res.send({});
+})
+
+// course (read)
+app.get('/get-courses', function (req, res) {
+
+    const myQuery = `SELECT * FROM courses`;
+
+    db.query(myQuery, function (err, rows) {
+        if (rows) {
+            if (rows.length > 0) {
+                res.send({ 'courses': rows });
+            } else {
+                res.send({ 'courses': 'No records' });
+            }
+        } else {
+            res.send({ 'courses': 'No records' });
+        }
+    });
+})
+
+// course (update)
+app.patch('/update-course', function (req, res) {
+
+    const courseId = req.body.courseId;
+    const courseCode = req.body.courseCode;
+    const title = req.body.title;
+    const coordinator = req.body.coordinator;
+    const department = req.body.department;
+
+    const myQuery = `UPDATE courses SET course_code = '${courseCode}', title = '${title}', instructor = '${coordinator}', department = '${department}' WHERE id = ${courseId}`;
+
+    db.query(myQuery, function (err, rows) {
+        if (err) throw err;
+        res.send({});
+    });
+})
+
+// course (delete)
+app.delete('/delete-course', function (req, res) {
+
+    const courseId = req.body.courseId;
+
+    const myQuery = `DELETE FROM courses WHERE id = ${courseId}`;
+
+    db.query(myQuery, function (err, result) {
+        if (err) throw err;
+
+        res.send({});
+    });
+
+})
+
+// Student Section
+// Student (create)
+app.post('/student', function (req, res) {
+
+    const fullname = req.body.fullname;
+    const email = req.body.email;
+    const course = req.body.course;
+    const password = req.body.password;
+
+    const hash = bcrypt.hashSync(password, 10)
+
+    const myQuery = `INSERT INTO student 
+        (fullname, email, course, password) VALUES ("${fullname}", "${email}", "${course}", "${hash}")`;
+
+    db.query(myQuery, function (err, result) {
+        if (err) throw err;
+        console.log("result from database: ", result);
+    });
+
+    res.send({});
+})
+
+// student (read)
+app.get('/studentTable', function (req, res) {
+
+    const myQuery = `SELECT * FROM student`;
+
+    db.query(myQuery, function (err, rows) {
+        if (rows.length > 0) {
+            res.send({ 'data': rows });
+        }
+    });
+})
+
+// student (update)
+app.patch('/updateStudent', function (req, res) {
+
+    const id = req.body.id;
+    const fullname = req.body.fullname;
+    const email = req.body.email;
+    const course = req.body.course;
+
+    const myQuery = `UPDATE student SET fullname = '${fullname}', email = '${email}', course = '${course}' WHERE student_id = '${id}'`;
+
+    db.query(myQuery, function (err, rows) {
+        if (err) throw err;
+        res.send({});
+    });
+})
+
+// student (delete)
+app.delete('/deleteStudent', function (req, res) {
+
+    const userId = req.body.id;
+
+    const myQuery = `DELETE FROM student WHERE student_id = ${userId}`;
+
+    db.query(myQuery, function (err, result) {
+        if (err) throw err;
+
+        res.send({});
+    });
+
+})
+
 // <<<<<<<<<<<<<<<<<<
 
 app.listen(port, () => { console.log(`http://localhost:${port}`) });
