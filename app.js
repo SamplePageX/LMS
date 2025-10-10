@@ -128,9 +128,9 @@ app.post('/login', function (req, res) {
             const checkPassword = bcrypt.compareSync(validPassword, hash);
 
             if (checkPassword) {
-                if (row[0].role_id === 1) {
+                if (row[0].role_id === 2) {
                     res.send({ 'redirect': '/faculty/dashboard' });
-                } else if (row[0].role_id === 2) {
+                } else if (row[0].role_id === 1) {
                     res.send({ 'redirect': '/student/dashboard' });
                 } else {
                     res.send({ 'redirect': '/admin/dashboard' });
@@ -155,7 +155,7 @@ app.post('/register', function (req, res) {
     const hash = bcrypt.hashSync(validPassword, 10)
 
     const myQuery = `INSERT INTO users 
-        (name, school_id, email, password, role_id) VALUES ("${validName}", "${validSchoolId}", "${validEmail}", "${hash}", 2)`;
+        (name, school_id, email, password, role_id) VALUES ("${validName}", "${validSchoolId}", "${validEmail}", "${hash}", 1)`;
 
     db.query(myQuery, function (err, result) {
         if (err) throw err;
@@ -224,6 +224,7 @@ app.get('/users', function (req, res) {
     });
 });
 
+// Faculty Section
 // faculty (create)
 app.post('/faculty', function (req, res) {
 
@@ -495,10 +496,9 @@ app.patch('/update-module', function (req, res) {
     const id = req.body.moduleId;
     const week = req.body.week;
     const title = req.body.title;
-    const fileName = req.body.fileName;
     const deadline = req.body.deadline;
 
-    const myQuery = `UPDATE modules SET week = '${week}', title = '${title}', file_name = '${fileName}', deadline = '${deadline}' WHERE id = ${id}`;
+    const myQuery = `UPDATE modules SET week = '${week}', title = '${title}', deadline = '${deadline}' WHERE id = ${id}`;
 
     db.query(myQuery, function (err, rows) {
         if (err) throw err;
@@ -574,6 +574,138 @@ app.delete('/delete-assignment', function (req, res) {
         if (err) throw err;
 
         res.send({ 'success': 'Successfully Deleted' });
+    });
+
+})
+
+// Test Section
+// test (create)
+app.post('/create-test', function (req, res) {
+    const title = req.body.title;
+    const description = req.body.description;
+
+    const myQuery = `INSERT INTO tests (title, description) VALUES ('${title}', '${description}')`;
+
+    db.query(myQuery, function (err, result) {
+        if (err) throw err;
+        console.log("result from database: ", result);
+    });
+
+    res.send({});
+})
+
+// test (read)
+app.get('/get-tests', function (req, res) {
+
+    const myQuery = `SELECT * FROM tests`;
+
+    db.query(myQuery, function (err, rows) {
+        if (rows) {
+            if (rows.length > 0) {
+                res.send({ 'tests': rows });
+            } else {
+                res.send({ 'tests': 'No records' });
+            }
+        } else {
+            res.send({ 'tests': 'No records' });
+        }
+    });
+})
+
+// test (update)
+app.patch('/update-test', function (req, res) {
+
+    const testId = req.body.testId;
+    const title = req.body.title;
+    const description = req.body.description;
+
+    const myQuery = `UPDATE tests SET title = '${title}', description = '${description}' WHERE id = ${testId}`;
+
+    db.query(myQuery, function (err, rows) {
+        if (err) throw err;
+        res.send({});
+    });
+})
+
+// test (delete)
+app.delete('/delete-test', function (req, res) {
+
+    const testId = req.body.testId;
+
+    const myQuery = `DELETE FROM tests WHERE id = ${testId}`;
+
+    db.query(myQuery, function (err, result) {
+        if (err) throw err;
+
+        res.send({});
+    });
+
+})
+
+// Course Management Section
+// course (create)
+app.post('/create-course', function (req, res) {
+    const courseCode = req.body.courseCode;
+    const title = req.body.title;
+    const coordinator = req.body.coordinator;
+    const department = req.body.department;
+
+    const myQuery = `INSERT INTO courses (course_code, title, instructor, department, status) VALUES ('${courseCode}', '${title}', '${coordinator}', '${department}', '1')`;
+
+    db.query(myQuery, function (err, result) {
+        if (err) throw err;
+        console.log("result from database: ", result);
+    });
+
+    res.send({});
+})
+
+// course (read)
+app.get('/get-courses', function (req, res) {
+
+    const myQuery = `SELECT * FROM courses`;
+
+    db.query(myQuery, function (err, rows) {
+        if (rows) {
+            if (rows.length > 0) {
+                res.send({ 'courses': rows });
+            } else {
+                res.send({ 'courses': 'No records' });
+            }
+        } else {
+            res.send({ 'courses': 'No records' });
+        }
+    });
+})
+
+// course (update)
+app.patch('/update-course', function (req, res) {
+
+    const courseId = req.body.courseId;
+    const courseCode = req.body.courseCode;
+    const title = req.body.title;
+    const coordinator = req.body.coordinator;
+    const department = req.body.department;
+
+    const myQuery = `UPDATE courses SET course_code = '${courseCode}', title = '${title}', instructor = '${coordinator}', department = '${department}' WHERE id = ${courseId}`;
+
+    db.query(myQuery, function (err, rows) {
+        if (err) throw err;
+        res.send({});
+    });
+})
+
+// course (delete)
+app.delete('/delete-course', function (req, res) {
+
+    const courseId = req.body.courseId;
+
+    const myQuery = `DELETE FROM courses WHERE id = ${courseId}`;
+
+    db.query(myQuery, function (err, result) {
+        if (err) throw err;
+
+        res.send({});
     });
 
 })

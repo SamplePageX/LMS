@@ -6,7 +6,105 @@
                     <h2 class="mb-2">Course Management</h2>
                     <h5 class="text-body-tertiary fw-semibold">Manage your Courses</h5>
                 </div>
-                <!-- Contents here... -->
+                <div class="container-fluid p-4">
+                    <!-- Header -->
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="fw-bold">Courses</h2>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createCourseModal">
+                            <i class="bi bi-plus-lg"></i> Create Course
+                        </button>
+
+                        <!-- Modal Create Course -->
+                        <div class="modal fade" id="createCourseModal" tabindex="-1" aria-hidden="true"
+                            style="display: none;">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Add Course</h5>
+                                        <button class="btn btn-close p-1" type="button" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="">
+                                            <label class="form-label">Course Code</label>
+                                            <input class="form-control" id="addCourseCode" placeholder="e.g BSIT"
+                                                type="text" required="" />
+                                        </div>
+                                        <div class="">
+                                            <label class="form-label">Title</label>
+                                            <input class="form-control" id="addTitle"
+                                                placeholder="e.g Bachelor of Science In Information Technology"
+                                                type="text" required="" />
+                                        </div>
+                                        <div class="">
+                                            <label class="form-label ">Coordinator</label>
+                                            <input class="form-control" id="addCoordinator"
+                                                placeholder="e.g Jetro S. Almodal" type="text" required="" />
+                                        </div>
+                                        <div class="">
+                                            <label class="form-label ">Department</label>
+                                            <input class="form-control" id="addDepartment"
+                                                placeholder="e.g Computer Studies" type="text" required="" />
+                                        </div>
+                                    </div>
+                                    <!-- modal footer -->
+                                    <div class="modal-footer"><button class="btn btn-primary" type="button"
+                                            id="addCourseBtn" type="button">Create</button><button
+                                            class="btn btn-outline-primary" type="button"
+                                            data-bs-dismiss="modal">Cancel</button></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Search Bar -->
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-body">
+                            <form class="row g-3">
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" placeholder="Search by Course Title">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" placeholder="Instructor">
+                                </div>
+                                <div class="col-md-3">
+                                    <select class="form-select">
+                                        <option selected disabled>Department</option>
+                                        <option value="CS">Computer Science</option>
+                                        <option value="IT">Information Technology</option>
+                                        <option value="Math">Mathematics</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 d-grid">
+                                    <button type="submit" class="btn btn-success">Filter</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!--Grid -->
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>Course Code</th>
+                                            <th>Title</th>
+                                            <th>Instructor</th>
+                                            <th>Department</th>
+                                            <th>Status</th>
+                                            <th class="text-center">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="courseTableList">
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -16,8 +114,157 @@
                 <p class="mb-0 mt-2 mt-sm-0 text-body">© 2025 LMS</p>
             </div>
             <div class="col-12 col-sm-auto text-center">
-                
+
             </div>
         </div>
     </footer>
 </div>
+
+<script>
+    fetch('http://localhost:8080/get-courses')
+        .then(response => response.json())
+        .then(data => {
+            let courseTableHTML = '';
+
+            if (data.courses !== "No records") {
+                data.courses.forEach(course => {
+                    courseTableHTML += `
+                    <tr>
+                        <td>${course.course_code}</td>
+                        <td>${course.title}</td>
+                        <td>${course.instructor}</td>
+                        <td>${course.department}</td>
+                        <td><span class="badge bg-${course.status ? 'success' : 'secondary'}">${course.status ? 'Active' : 'Inactive'}</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-warning mb-2" data-bs-target="#updateCourseModal${course.id}" data-bs-toggle="modal">Edit</button>
+                            <button data-course-id="${course.id}" class="delete-course-btn btn btn-sm btn-danger">Delete</button>
+                            <div class="modal fade" id="updateCourseModal${course.id}" tabindex="-1" aria-hidden="true"
+                                style="display: none;">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Edit Course</h5>
+                                            <button class="btn btn-close p-1" type="button" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="">
+                                                <label class="form-label">Course Code</label>
+                                                <input class="form-control" id="editCourseCode${course.id}" value="${course.course_code}"
+                                                    type="text" required="" />
+                                            </div>
+                                            <div class="">
+                                                <label class="form-label">Title</label>
+                                                <input class="form-control" id="editTitle${course.id}"
+                                                    value="${course.title}"
+                                                    type="text" required="" />
+                                            </div>
+                                            <div class="">
+                                                <label class="form-label ">Coordinator</label>
+                                                <input class="form-control" id="editCoordinator${course.id}"
+                                                    value="${course.instructor}" type="text" required="" />
+                                            </div>
+                                            <div class="">
+                                                <label class="form-label ">Department</label>
+                                                <input class="form-control" id="editDepartment${course.id}"
+                                                    value="${course.department}" type="text" required="" />
+                                            </div>
+                                        </div>
+                                        <!-- modal footer -->
+                                        <div class="modal-footer"><button data-course-id="${course.id}" class="edit-course-btn btn btn-primary" type="button" type="button">Update</button><button
+                                                class="btn btn-outline-primary" type="button"
+                                                data-bs-dismiss="modal">Cancel</button></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                });
+            } else {
+                courseTableHTML = "<h4>No records Found</h4>";
+            }
+
+            document.getElementById('courseTableList').innerHTML = courseTableHTML;
+
+            document.querySelectorAll('.edit-course-btn').forEach(btn => {
+                btn.onclick = () => {
+                    const courseId = btn.dataset.courseId;
+                    const courseCode = document.getElementById(`editCourseCode${courseId}`).value;
+                    const title = document.getElementById(`editTitle${courseId}`).value;
+                    const coordinator = document.getElementById(`editCoordinator${courseId}`).value;
+                    const department = document.getElementById(`editDepartment${courseId}`).value;
+
+                    fetch('http://localhost:8080/update-course', {
+                        method: 'PATCH',
+                        headers: {
+                            "Accept": "application/json",
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            courseId: courseId,
+                            courseCode: courseCode,
+                            title: title,
+                            coordinator: coordinator,
+                            department: department
+                        })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            window.location.reload();
+                        })
+                        .catch(err => console.error(err));
+                }
+            })
+
+            document.querySelectorAll('.delete-course-btn').forEach(btn => {
+                btn.onclick = () => {
+                    const courseId = btn.dataset.courseId;
+
+                    fetch('http://localhost:8080/delete-course', {
+                        method: 'DELETE',
+                        headers: {
+                            "Accept": "application/json",
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            courseId: courseId
+                        })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            window.location.reload();
+                        })
+                        .catch(err => console.error(err));
+                }
+            })
+
+        })
+        .catch(err => console.error(err));
+
+    document.getElementById('addCourseBtn').onclick = () => {
+        const courseCode = document.getElementById('addCourseCode').value;
+        const title = document.getElementById('addTitle').value;
+        const coordinator = document.getElementById('addCoordinator').value;
+        const department = document.getElementById('addDepartment').value;
+
+        fetch('http://localhost:8080/create-course', {
+            method: 'POST',
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                courseCode: courseCode,
+                title: title,
+                coordinator: coordinator,
+                department: department
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                window.location.reload();
+            })
+            .catch(err => console.error(err));
+    }
+</script>

@@ -64,7 +64,7 @@
                 <th class="text-center">Action</th>
               </tr>
             </thead>
-            <tbody id="moduleTable">
+            <tbody id="moduleTableList">
               <!-- Dynamic rows will appear here -->
             </tbody>
           </table>
@@ -150,14 +150,13 @@
       `;
       })
 
-      document.getElementById('moduleTable').innerHTML = moduleHTML;
+      document.getElementById('moduleTableList').innerHTML = moduleHTML;
 
       document.querySelectorAll('.edit-module-btn').forEach(btn => {
         btn.onclick = function () {
           const moduleId = btn.dataset.moduleId;
           const week = document.getElementById(`editWeek${moduleId}`).value;
           const title = document.getElementById(`editTitle${moduleId}`).value;
-          const fileInput = document.getElementById(`editFileUpload${moduleId}`);
           const author = document.getElementById(`editDeadline${moduleId}`).value;
 
           fetch('http://localhost:8080/update-module', {
@@ -170,7 +169,6 @@
               moduleId: moduleId,
               week: week,
               title: title,
-              fileName: fileInput.value,
               deadline: deadline
             })
           })

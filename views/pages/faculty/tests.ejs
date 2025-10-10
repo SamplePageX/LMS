@@ -7,6 +7,53 @@
                     <h5 class="text-body-tertiary fw-semibold">Make quizes or exams to improve learning</h5>
                 </div>
                 <!-- Contents here... -->
+
+                <!-- Page Header -->
+                <div class="container mt-4">
+                    <h2 class="text-center mb-4">📘 Tests Management</h2>
+
+                    <!-- CREATE: Add New Test -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-primary text-white">
+                            Add New Test
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">Test Title</label>
+                                <input type="text" id="addTitle" class="form-control" placeholder="Enter test title">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Description</label>
+                                <textarea class="form-control" id="addDescription" rows="3"
+                                    placeholder="Enter short description"></textarea>
+                            </div>
+                            <button type="submit" id="addTestBtn" class="btn btn-success">Add Test</button>
+                        </div>
+                    </div>
+
+                    <!-- READ: List of Tests -->
+                    <div class="card">
+                        <div class="card-header bg-secondary text-white">
+                            All Tests
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Title</th>
+                                        <th>Description</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="testTableList">
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -16,8 +63,139 @@
                 <p class="mb-0 mt-2 mt-sm-0 text-body">© 2025 LMS</p>
             </div>
             <div class="col-12 col-sm-auto text-center">
-                
+
             </div>
         </div>
     </footer>
 </div>
+
+<script>
+    fetch('http://localhost:8080/get-tests')
+        .then(response => response.json())
+        .then(data => {
+            let testTableHTML = '';
+
+            if (data.tests !== "No records") {
+                data.tests.forEach(test => {
+                    testTableHTML += `
+                    <tr>
+                        <td>1</td>
+                        <td>${test.title}</td>
+                        <td>${test.description}</td>
+                        <td>
+                            <!-- UPDATE -->
+                            <button class="btn btn-sm btn-warning" data-bs-target="#updateTestModal${test.id}" data-bs-toggle="modal">Edit</button>
+                            <!-- DELETE -->
+                            <button data-test-id="${test.id}" class="delete-test-btn btn btn-sm btn-danger">Delete</button>
+                            <div class="modal fade" id="updateTestModal${test.id}" tabindex="-1" aria-hidden="true"
+                                style="display: none;">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Edit Test</h5>
+                                            <button class="btn btn-close p-1" type="button" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="">
+                                                <label class="form-label">Title</label>
+                                                <input class="form-control" id="editTitle${test.id}"
+                                                    value="${test.title}" type="text" required="" />
+                                            </div>
+                                            <div class="">
+                                                <label class="form-label">Description</label>
+                                                <textarea class="form-control" id="editDescription${test.id}" rows="3"
+                                                    placeholder="Enter short description">${test.description}</textarea>
+                                            </div>
+                                        </div>
+                                        <!-- modal footer -->
+                                        <div class="modal-footer"><button data-test-id="${test.id}"
+                                                class="edit-test-btn btn btn-primary" type="button"
+                                                type="button">Update</button><button class="btn btn-outline-primary"
+                                                type="button" data-bs-dismiss="modal">Cancel</button></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                });
+            } else {
+                courseTableHTML = "<h5>No records Found</h5>";
+            }
+
+            document.getElementById('testTableList').innerHTML = testTableHTML;
+
+            document.querySelectorAll('.edit-test-btn').forEach(btn => {
+                btn.onclick = () => {
+                    const testId = btn.dataset.testId;
+                    const title = document.getElementById(`editTitle${testId}`).value;
+                    const description = document.getElementById(`editDescription${testId}`).value;
+
+                    fetch('http://localhost:8080/update-test', {
+                        method: 'PATCH',
+                        headers: {
+                            "Accept": "application/json",
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            testId: testId,
+                            title: title,
+                            description: description
+                        })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            window.location.reload();
+                        })
+                        .catch(err => console.error(err));
+                }
+            })
+
+            document.querySelectorAll('.delete-test-btn').forEach(btn => {
+                btn.onclick = () => {
+                    const testId = btn.dataset.testId;
+
+                    fetch('http://localhost:8080/delete-test', {
+                        method: 'DELETE',
+                        headers: {
+                            "Accept": "application/json",
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            testId: testId
+                        })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            window.location.reload();
+                        })
+                        .catch(err => console.error(err));
+                }
+            })
+
+        })
+        .catch(err => console.error(err));
+
+    document.getElementById('addTestBtn').onclick = () => {
+        const title = document.getElementById('addTitle').value;
+        const description = document.getElementById('addDescription').value;
+
+        fetch('http://localhost:8080/create-test', {
+            method: 'POST',
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                title: title,
+                description: description
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                window.location.reload();
+            })
+            .catch(err => console.error(err));
+    }
+</script>
